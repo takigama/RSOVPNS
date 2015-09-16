@@ -1,0 +1,212 @@
+a:hover, a:visited:hover { color: #6666EE;
+  text-decoration: none;
+}
+
+a:visited { color: #333399;
+  text-decoration: none;
+}
+
+body, p, td, br, center { font-size: 10pt;
+  font-family: sans-serif;
+}
+
+title { color: #333333;
+  font-family: sans-serif;
+}
+
+h1 { color: #333333;
+  font-size: 150%;
+  font-family: sans-serif;
+}
+
+h2 { color: #333333;
+  font-size: 130%;
+  font-family: sans-serif;
+}
+
+h3 { color: #333333;
+  font-size: 125%;
+  font-family: sans-serif;
+}
+
+h4 { color: #333333;
+  font-size: 120%;
+  font-family: sans-serif;
+}
+
+th { font-size: small; }
+
+pre { font-size: 8pt; }
+
+#mymenu {
+  width:160px;
+  overflow:hidden;
+  height: 200%;
+  float: left;
+  padding-right: 20px;
+}
+
+#mybody {
+  display:block;
+  overflow:hidden;
+  width:auto;
+  height: 200%;
+  background-color: #EEEEEE;
+  padding-left: 10px;
+  padding-top: 10px;
+}
+
+#myfooter {
+  background-color: #CCCCCC;
+  clear: both;
+  text-align: center;
+  padding 5px;
+  position: fixed;
+  left: 10px;bottom: 0px; width:100%;
+}
+
+#myheader_inner {
+  font-size: 150%;
+  font-family: sans-serif;
+  text-align: left;
+  padding-left: 82px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  background-color: #EEEEEE;
+/*  border: 2px;
+  border-style: solid;
+  border-color: #000000;*/
+}
+
+#myheader_outer {
+  font-size: 150%;
+  font-family: sans-serif;
+  text-align: center;
+  padding-top: 0px;
+  padding-bottom: 8px;
+}
+
+#message_outer {
+  font-family: sans-serif;
+  text-align: center;
+  padding-bottom: 8px;
+}
+
+#message_info {
+  font-family: sans-serif;
+  text-align: left;
+  padding-left: 12px;
+  border: 1px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-style: solid;
+  border-color: #000000;
+  background-color: #CCFFCC;
+}
+
+#message_warning {
+  font-family: sans-serif;
+  text-align: left;
+  padding-left: 12px;
+  border: 1px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-style: solid;
+  border-color: #000000;
+  background-color: #EEEEBB;
+}
+
+#message_error {
+  font-family: sans-serif;
+  text-align: left;
+  padding-left: 12px;
+  border: 1px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-style: solid;
+  border-color: #000000;
+  background-color: #FFCCCC;
+}
+
+#myheader_outer {
+  font-size: 150%;
+  font-family: sans-serif;
+  text-align: center;
+  padding-top: 0px;
+  padding-bottom: 8px;
+}
+
+#userlisthead {
+  font-family: sans-serif;
+  /*text-align: center;*/
+  font-size: 120%;
+  padding-left: 30px;
+}
+
+#mybodyheading {
+  font-size: 150%;
+  font-family: sans-serif;
+  /*text-align: center;*/
+  font-size: 135%;
+  padding-left: 60px;
+}
+
+#mydebug {
+  background-color: #AAAAAA;
+  clear: both;
+  text-align: center;
+  padding 5px;
+  position: fixed;
+  left: 120%;bottom: 0px; width:100%;
+}
+
+#createuserframe {
+  display:block;
+  overflow:hidden;
+  width:auto;
+}
+
+#createusertitle {
+  float:left;
+  font-size: 115%;
+  /*font-weight: 300;*/
+  padding-right: 8px;
+  padding-top: 10px;
+}
+
+#createusertable {
+  float:left;
+}
+
+#menu_name {
+  text-align: center;
+  font-size: 135%;
+  padding-top: 10px;
+}
+
+table.configtable, table.configtable td, table.configtable tbody {
+  border-width: 1px;
+  border-style: solid;
+  border-color: #000000;
+  border-collapse: collapse;
+}
+
+table.configtable th {
+  border-width: 1px;
+  border-style: solid;
+  border-color: #000000;
+  border-collapse: collapse;
+  padding-left: 4px;
+  padding-right: 4px;
+  background-color: #CCCCCC;
+}
+
+
+#config_table {
+  border: 1px;
+}
+
+body {
+  color:#000000;
+  background-color: #CCCCCC;
+}
