@@ -1,0 +1,40 @@
+<html>
+<h1>Token Pickup</h1>
+<hr>
+Welcome to the token pickup page, here you must do things, most important ensure that you have:
+
+<li> Your mobile device
+<li> Google Authenticator installed on your device
+<li> A Barcode scanner (one is in-build to google authenticator)
+<li> If scanning the QR code from the desktop, ensure you have privacy
+<li> Token can only be retrived once, so if you make a mistake, a new token must be created.
+
+<br><br>
+You may now either continue from this page from your desktop or mobile device once the above have been completed.
+When using the desktop you must scan the QR code that is presented in either a QR code reader on your device or via the Google Authenticator software.
+When using your mobile device you will simply have to click a link from the browser that should automatically install the token in the
+Google Authenticator software.<br><br>
+
+<script type="text/javascript">
+function sureClicked() {
+  var currentUrl = window.location.href
+  if(document.getElementById('id_surecheckbox').checked) {
+    console.log("cliecked");
+    var link = document.getElementById("id_gettoken");
+    link.setAttribute('href', currentUrl + "&sure=true");
+    document.getElementById("id_gettoken").innerHTML = "here";
+  } else {
+    console.log("not cliecked");
+    var link = document.getElementById("id_gettoken");
+    link.setAttribute('href', currentUrl);
+    document.getElementById("id_gettoken").innerHTML = "not here";
+
+  }
+
+}
+
+</script>
+<form>Yes, I am sure I am ready to recieve my token <input type="checkbox" name="sure" id="id_surecheckbox" onchange="sureClicked()"></form><br>
+Click <a href="#" id="id_gettoken"></a> to continue<br>
+
+</html>

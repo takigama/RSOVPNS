@@ -74,11 +74,29 @@ function users_doCreateUser()
     }
   }
 
+  user_createPickupData($username);
+
 
   $json = '{ "result": "success", "reason": "User created" }';
   echo $json;
 
   error_log("happy camper");
+}
+
+function user_createPickupData($username)
+{
+  require_once("../lib/phpqrcode.php");
+
+  $myga = new MyGA();
+
+  $tkpid = db_getTokenPickupKey($username);
+
+  $url = $myga->createURL($username);
+
+  file_put_contents("../pickup/$tkpid.url", $url);
+
+  QRcode::png($url, "../pickup/$tkpid.png");
+
 }
 
 function users_doUsersBody()

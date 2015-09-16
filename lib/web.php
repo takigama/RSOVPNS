@@ -70,7 +70,7 @@ function web_doPageMessage()
         break;
       }
     }
-    
+
     unset($_SESSION["messages"]);
   }
 }
@@ -200,4 +200,89 @@ function web_doPageBottom()
   echo "\n\nend\n</pre>";
   echo "</div>";
 }
+
+/* **********************
+
+Token pickup functions start here
+
+*/
+
+
+function web_buildPagePickup()
+{
+  web_pickupCheckPost();
+
+  web_doHeaders();
+
+  if(isset($_REQUEST["tkpuid"])) {
+    $tid = $_REQUEST["tkpuid"];
+    if(file_exists("../pickup/$tid.url")) {
+      web_pickupBeginInstruction();
+    } else {
+      web_pickupNoToken();
+    }
+  } else {
+    web_pickupNoID();
+  }
+
+  web_doPageBottom();
+}
+
+function web_pickupCheckPost()
+{
+  if(isset($_REQUEST["gettokenimage"])) {
+    if(isset($_REQUEST["tkpuid"])) {
+      $tid = $_REQUEST["tkpuid"];
+      header("Content-Type: image/png");
+      echo file_get_contents("../pickup/$tid.png");
+      exit(0);
+    }
+  }
+
+  if(isset($_REQUEST["sure"])) {
+    if(isset($_REQUEST["tkpuid"])) {
+      $tid = $_REQUEST["tkpuid"];
+      web_pickupDoPickupPage();
+    }
+  }
+}
+
+function web_pickupDoPickupPage()
+{
+
+  $tid = $_REQUEST["tkpuid"];
+
+  $url = file_get_contents("../pickup/$tid.url");
+
+  web_doHeaders();
+
+  echo "<html>";
+  echo "<h1>Heres your token</h1>";
+  echo "<b>Once you have a key in Google Authenticator, be sure to close this page!</b><br><br>";
+  echo "If your browsing from the mobile device with google authenticator installed, click the <a href='$url'>Here</a> to import your key.<br><br>";
+  echo "If you are browsing this page from your desktop, scan the following QRcode using the google authenticator software<br><img src='pickup.php?tkpuid=$tid&gettokenimage'>";
+
+
+  echo "</html>";
+
+  exit(0);
+}
+
+function web_pickupBeginInstruction()
+{
+  echo file_get_contents("../templates/pickup/page1.html");
+}
+
+function web_pickupNoToken()
+{
+  echo file_get_contents("../templates/pickup/notoken.html");
+}
+
+function web_pickupNoID()
+{
+  echo file_get_contents("../templates/pickup/noid.html");
+}
+
+
+
 ?>

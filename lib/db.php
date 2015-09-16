@@ -87,6 +87,21 @@ function db_getTokenData($user)
   return $retval;
 }
 
+function db_getTokenPickupKey($user)
+{
+  global $ourdb, $MESSAGE, $MESSAGE_TYPE;
+
+  $sql = "select TokenPickupKey from users where Username='$user'";
+
+  $userdata = $ourdb->query($sql);
+
+  while($row = $userdata->fetchArray()) {
+    $retval = $row[0];
+  }
+
+  return $retval;
+}
+
 function db_userExists($lo_username)
 {
   // TODO implement
