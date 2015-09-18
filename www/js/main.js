@@ -79,6 +79,11 @@ function submit_form_clicked()
 
 }
 
+function validateConfigForm()
+{
+  // TODO: need to actually do this
+}
+
 function clearCreateUserForm() {
   document.getElementById("cr_username").value = "";
   document.getElementById("cr_pass1").value = "";

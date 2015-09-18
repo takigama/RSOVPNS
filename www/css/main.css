@@ -6,8 +6,10 @@ a:visited { color: #333399;
   text-decoration: none;
 }
 
-body, p, td, br, center { font-size: 10pt;
+body, p, td, br, center {
+  font-size: 10pt;
   font-family: sans-serif;
+  line-height: 130%;
 }
 
 title { color: #333333;
@@ -149,6 +151,13 @@ pre { font-size: 8pt; }
   /*text-align: center;*/
   font-size: 135%;
   padding-left: 60px;
+}
+
+#mybodysubheading {
+  font-family: sans-serif;
+  /*text-align: center;*/
+  font-size: 120%;
+  padding-left: 30px;
 }
 
 #mydebug {

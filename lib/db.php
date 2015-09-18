@@ -30,8 +30,51 @@ function db_getUsers()
     $retval[$n] = $row;
     $n++;
   }
+  error_log("rows from select is $n");
 
   return $retval;
+}
+
+function db_getConfig($key, $default = -1)
+{
+  global $ourdb;
+
+  $users = $ourdb->query("select Value from config where Name='$key'");
+
+  $retval = array();
+  $n = 0;
+
+  while($row = $users->fetchArray()) {
+    $retval = $row[0];
+    $n++;
+  }
+
+  if($n == 0) {
+    //error_log("cant find value for $key, sending default, $default");
+    return $default;
+  } else {
+    //error_log("value for $key was $retval, sending");
+    return $retval;
+  }
+}
+
+function db_setConfig($key, $value)
+{
+  global $ourdb, $MESSAGE, $MESSAGE_TYPE;
+
+  $cval = db_getConfig($key);
+
+  if($cval == -1) {
+    $sql = "delete from config where Name='$key'";
+    $ourdb->exec($sql);
+    $sql = "insert into config (Name, Value) values ('$key', '$value')";
+    $ourdb->exec($sql);
+  } else {
+    $sql = "update config set Value='$value' where Name='$key'";
+    $ourdb->exec($sql);
+  }
+
+  return true;
 }
 
 function db_createDB()

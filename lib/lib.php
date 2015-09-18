@@ -1,4 +1,7 @@
 <?php
+// to avoid php's pain the rear annoyances
+date_default_timezone_set("UTC");
+
 
 require_once("db.php");
 require_once("web.php");

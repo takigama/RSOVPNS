@@ -23,18 +23,18 @@ function sureClicked() {
     var link = document.getElementById("id_gettoken");
     link.setAttribute('href', currentUrl + "&sure=true");
     document.getElementById("id_gettoken").innerHTML = "here";
+    document.getElementById("definitely_get_this").style.display = 'block';
   } else {
     console.log("not cliecked");
     var link = document.getElementById("id_gettoken");
     link.setAttribute('href', currentUrl);
     document.getElementById("id_gettoken").innerHTML = "not here";
-
+    document.getElementById("definitely_get_this").style.display = 'none';
   }
-
 }
 
 </script>
 <form>Yes, I am sure I am ready to recieve my token <input type="checkbox" name="sure" id="id_surecheckbox" onchange="sureClicked()"></form><br>
-Click <a href="#" id="id_gettoken"></a> to continue<br>
+<div id="definitely_get_this" style="display: none;">Click <a href="#" id="id_gettoken"></a> to continue</div><br>
 
 </html>
