@@ -3,13 +3,14 @@
 global $HOMEDIR, $DB_TYPE, $DB_LOCATION, $MESSAGE, $MESSAGE_TYPE;
 
 try {
+  //echo "attempting database\n";
   if(!file_exists($DB_LOCATION)) {
     $ourdb = new SQLite3($DB_LOCATION);
     db_createDB();
   }
   $ourdb = new SQLite3($DB_LOCATION);
 } catch (Exception $e) {
-
+  //echo "exception\n".print_r($e)."\n";
   $ourdb = null;
   $MESSAGE = "Failed to open database...";
   $MESSAGE_TYPE = 1;
@@ -30,7 +31,25 @@ function db_getUsers()
     $retval[$n] = $row;
     $n++;
   }
-  error_log("rows from select is $n");
+  //error_log("rows from select is $n");
+
+  return $retval;
+}
+
+function db_getUser($username)
+{
+  global $ourdb;
+
+  $users = $ourdb->query("select * from users where Username='$username'");
+
+  $retval = array();
+  $n = 0;
+
+  while($row = $users->fetchArray()) {
+    $retval = $row;
+    $n++;
+  }
+  //error_log("rows from select is $n");
 
   return $retval;
 }
@@ -154,16 +173,16 @@ function db_userExists($lo_username)
 
   $nu = $ourdb->query($sql);
 
-  error_log("sql: ".$sql);
-  error_log("doh: ".print_r($nu, true));
+  //error_log("sql: ".$sql);
+  //error_log("doh: ".print_r($nu, true));
 
   $num = $nu->fetchArray()[0];
 
   if($num != 0) {
-    error_log("user exists, return true");
+    //error_log("user exists, return true");
     return true;
   }
-  error_log("user not exists, return false");
+  //error_log("user not exists, return false");
 
   return false;
 }

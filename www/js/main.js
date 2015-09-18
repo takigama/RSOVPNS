@@ -1,12 +1,20 @@
 $( document ).ready(function() {
   console.log("ferk");
-  $("#submit_create_form_button").click(function(e) {
+  $('#main_configuration_form').click(function(e) {
     e.preventDefault();
-    submit_form_clicked();
+    submit_main_config_form();
   })
+
+  $("#submit_create_user_form_button").click(function(e) {
+    e.preventDefault();
+    submit_create_user_form_clicked();
+  })
+
 })
 
-function submit_form_clicked()
+
+
+function submit_create_user_form_clicked()
 {
   var username = document.getElementById("cr_username").value;
   var pass1 = document.getElementById("cr_pass1").value;
@@ -76,8 +84,30 @@ function submit_form_clicked()
     }
   })
   // if post succeeds clear form
-
 }
+
+function submit_main_config_form()
+{
+  $.ajax({
+    url: "index.php?action=updateconfig",
+    type: "POST",
+    data: $("#configform").serialize(),
+    success: function (data) {
+      console.log(data);
+      result = JSON.parse(data);
+      if(result.result == "failure") {
+        alert("Failed: " + result.reason);
+      }
+      if(result.result == "success") {
+        alert("Configuration Updated!");
+      }
+    },
+    error: function (jXHR, textStatus, errorThrown) {
+        alert(errorThrown);
+    }
+  })
+}
+
 
 function validateConfigForm()
 {

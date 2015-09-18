@@ -117,7 +117,7 @@ function users_doUsersBody()
       echo "<td><input type='checkbox' name='cr_rad_on' id='cr_rad_on'></td><td>";
       echo "<select id='cr_tok_on' name='cr_tok_on'><option value='none'>None</option><option value='hotp'>HOTP</option><option value='totp'>TOTP</option></select>";
       echo "</td><td><input type='checkbox' name='cr_enabled' id='cr_enabled'></td>";
-      echo "<td><input type='submit' name='go' value='Create' id='submit_create_form_button'></td>";
+      echo "<td><input type='submit' name='go' value='Create' id='submit_create_user_form_button'></td>";
       echo "</tr>";
       echo "</table>";
     echo "</div>";
