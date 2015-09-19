@@ -5,8 +5,8 @@ require_once("../lib/lib.php");
 // we get the user/pass via file passed on cmd line
 // TODO: add some error checking here
 $fh = fopen($argv[1], "r");
-$user = fgets($fh, 4096);
-$pass = fgets($fh, 4096)
+$user = trim(fgets($fh, 4096));
+$pass = trim(fgets($fh, 4096));
 
 $rad_only = db_getConfig("radius.primary", 0);
 
@@ -22,7 +22,7 @@ if($rad_only==1 && !db_userExists($user)) {
 }
 
 $userDetails = db_getUser($user);
-print_r($userDetails);
+//print_r($userDetails);
 
 if($userDetails["Enabled"] == 0) {
   error_log("User not enabled");

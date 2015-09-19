@@ -118,7 +118,7 @@ function conf_doConfigurationBody()
   // echo "<tr><td>Token Digits</td><td><input type='text' name='token.digits' value='".db_getConfig('token.digits', '6')."'></td><td>Number of digits used by tokens (changing this requires all tokens to be re-issued)</td></tr>";
 
 
-  echo "<tr><td>Routes to push</td><td><textarea name='openvpn.routes' rows='4'>".db_getConfig('openvpn.routes', "10.0.0.0/8\n192.168.0.0/16\n")."</textarea></td><td>Internal network routes to push to client, one per line</td></tr>";
+  echo "<tr><td>Routes to push</td><td><textarea name='openvpn.routes' rows='4'>".db_getConfig('openvpn.routes', "10.0.0.0 255.0.0.0\n192.168.0.0 255.255.0.0\n")."</textarea></td><td>Internal network routes to push to client, one per line</td></tr>";
   echo "<tr><td>Primary DNS</td><td><input type='text' name='openvpn.dns1' value='".db_getConfig('openvpn.dns1', '8.8.8.8')."'></td><td>Primary DNS Server to push to client</td></tr>";
   echo "<tr><td>Secondary DNS</td><td><input type='text' name='openvpn.dns2' value='".db_getConfig('openvpn.dns2', '8.8.4.4')."'></td><td>Secondary DNS Server to push to client</td></tr>";
   echo "<tr><td colspan='3'><input type='submit' name='Save' value='Save' onclick='validateConfigForm()' id='main_configuration_form'></td></tr>";

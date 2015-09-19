@@ -14,14 +14,17 @@ function ctrl_localHeadCheck()
       break;
       case "stopopenvpn":
         ctrl_stopOpenVpn();
+        header("Location: index.php?action=status");
         exit(0);
       break;
       case "startopenvpn":
         ctrl_startOpenVpn();
+        header("Location: index.php?action=status");
         exit(0);
       break;
       case "restartopenvpn":
         ctrl_restartOpenVpn();
+        header("Location: index.php?action=status");
         exit(0);
       break;
     }
@@ -62,7 +65,6 @@ function ctrl_stopOpenVpn()
   $_SESSION["messages"]["ctrl"]["type"] = 1;
   $_SESSION["messages"]["ctrl"]["text"] = "OpenVPN Server Has Been Stopped";
 
-  header("Location: index.php?action=status");
 }
 
 function ctrl_startOpenVpn()
@@ -89,15 +91,15 @@ function ctrl_startOpenVpn()
   $_SESSION["messages"]["ctrl"]["type"] = 1;
   $_SESSION["messages"]["ctrl"]["text"] = "OpenVPN Server Has Been Started";
 
-  header("Location: index.php?action=status");
 }
 
 function ctrl_restartOpenVpn()
 {
+  ctrl_stopOpenVpn();
+  ctrl_startOpenVpn();
+
   $_SESSION["messages"]["ctrl"]["type"] = 1;
   $_SESSION["messages"]["ctrl"]["text"] = "OpenVPN Server Has Been Re-Started";
-
-  header("Location: index.php?action=status");
 }
 
 function ctrl_writeConfigFile()

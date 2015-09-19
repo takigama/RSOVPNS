@@ -129,7 +129,7 @@ function web_doCreateCert()
   db_setConfig("cert.validity", $valid);
 
   $cmd = "px5g selfsigned -days $valid -newkey rsa:2048 -keyout $HOMEDIR/data/server.key -out $HOMEDIR/data/server.crt -subj \"/C=$country/ST=$st/L=$loc/O=$org/OU=$dept/CN=$cn\" > /dev/null 2>&1";
-  echo("would run: $cmd");
+  //echo("would run: $cmd");
   system("touch ../data/server.key");
   system("touch ../data/server.crt");
   system($cmd);
@@ -287,6 +287,7 @@ function web_pickupCheckPost()
       $tid = $_REQUEST["tkpuid"];
       header("Content-Type: image/png");
       echo file_get_contents("../pickup/$tid.png");
+      unlink("../pickup/$tid.png");
       exit(0);
     }
   }
@@ -317,6 +318,7 @@ function web_pickupDoPickupPage()
   echo "<br>While you are here, you can also download the client configuration file, <a href='?pickupconf'>Here</a>";
   echo "</html>";
 
+  unlink("../pickup/$tid.url");
   exit(0);
 }
 
