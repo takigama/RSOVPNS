@@ -3,7 +3,6 @@ $WEB_HEADCHECK["WEB"]  = "web_localHeadCheck";
 $MENU_LIST["Home"] = "index.php";
 $MENU_LIST["Configuration"] = "?action=config";
 $MENU_LIST["Users"] = "?action=users";
-$MENU_LIST["Status"] = "?action=status";
 $PAGEBODY_FUNCTION = "";
 $MESSAGE = null;
 $MESSAGE_TYPE = 0;
@@ -84,9 +83,6 @@ function web_localHeadCheck()
       case "config":
         $PAGEBODY_FUNCTION = "web_doConfigurationBody";
       break;
-      case "status":
-        $PAGEBODY_FUNCTION = "web_normalPageBody";
-      break;
       case "createcert":
         web_doCreateCert();
         exit(0);
@@ -115,6 +111,7 @@ function web_doCreateDH()
 function web_doCreateCert()
 {
   // TODO: lots of validity checking
+  global $HOMEDIR;
   $country = $_REQUEST["cert_country"];
   $st = $_REQUEST["cert_state"];
   $loc = $_REQUEST["cert_locality"];
@@ -131,10 +128,11 @@ function web_doCreateCert()
   db_setConfig("cert.commonname", $cn);
   db_setConfig("cert.validity", $valid);
 
-  $cmd = "px5g selfsigned -days $valid -newkey rsa:2048 -keyout ../data/server.key -out ../data/server.crt -subj \"/C=$country/ST=$st/L=$loc/O=$org/OU=$dept/CN=$cn\"";
-  error_log("would run: $cmd");
+  $cmd = "px5g selfsigned -days $valid -newkey rsa:2048 -keyout $HOMEDIR/data/server.key -out $HOMEDIR/data/server.crt -subj \"/C=$country/ST=$st/L=$loc/O=$org/OU=$dept/CN=$cn\" > /dev/null 2>&1";
+  echo("would run: $cmd");
   system("touch ../data/server.key");
   system("touch ../data/server.crt");
+  system($cmd);
 
   $_SESSION["messages"]["cert"]["type"] = 1;
   $_SESSION["messages"]["cert"]["text"] = "New certificate created";
@@ -265,6 +263,25 @@ function web_buildPagePickup()
 
 function web_pickupCheckPost()
 {
+  global $HOMEDIR;
+
+  if(isset($_REQUEST["pickupconf"])) {
+    ctrl_writeClientFile();
+    if(!file_exists("$HOMEDIR/data/".db_getConfig("site.ident").".ovpn")) {
+      error_log("fail...");
+      echo "<html>Problem...</html>";
+    } else {
+      $info = file_get_contents("$HOMEDIR/data/".db_getConfig("site.ident").".ovpn");
+      header('Content-Description: File Transfer');
+      header('Content-Type: application/octet-stream');
+      header('Content-Disposition: attachment; filename=' . db_getConfig("site.ident").".ovpn");
+      header('Content-Transfer-Encoding: binary');
+      header('Content-Length: ' . strlen($info));
+      echo $info;
+    }
+    exit(0);
+  }
+
   if(isset($_REQUEST["gettokenimage"])) {
     if(isset($_REQUEST["tkpuid"])) {
       $tid = $_REQUEST["tkpuid"];
@@ -297,7 +314,7 @@ function web_pickupDoPickupPage()
   echo "If your browsing from the mobile device with google authenticator installed, click the <a href='$url'>Here</a> to import your key.<br><br>";
   echo "If you are browsing this page from your desktop, scan the following QRcode using the google authenticator software<br><img src='pickup.php?tkpuid=$tid&gettokenimage'>";
 
-
+  echo "<br>While you are here, you can also download the client configuration file, <a href='?pickupconf'>Here</a>";
   echo "</html>";
 
   exit(0);

@@ -21,10 +21,6 @@ function conf_localHeadCheck()
         conf_doUpdateConfig();
         exit(0);
       break;
-      case "updateconfig":
-        conf_doUpdateConfig();
-        exit(0);
-      break;
     }
   }
 }
@@ -82,13 +78,19 @@ function conf_doConfigurationBody()
     $dhkeyage = "no key created yet - required for OpenVPN to function";
   }
 
-  echo "<div id='mybodyheading'>Configraution</div><hr>";
+  echo "<div class='mybodyheading'>Configraution</div><hr>";
+  echo "<div class='mybodysubheading'>Main</div>";
   echo "<form method='post' action='?action=updateconfig' id='configform'>";
   echo "<table class='configtable'>";
   echo "<tr><th>Configraution Name</th><th>Value</th><th>Description</th></tr>";
+
+  echo "<tr><td>Site Identifier</td><td><input type='text' name='site.ident' value='".db_getConfig('site.ident', 'OurSite')."'></td><td>Friendly name used to describe the site running openvpn (should be unique)</td></tr>";
+
   echo "<tr><td>OpenVPN Port</td><td><input type='text' name='openvpn.port' value='".db_getConfig('openvpn.port', '1194')."'></td><td>The port OpenVPN users connect to (Required)</td></tr>";
   echo "<tr><td>OpenVPN Max Clients</td><td><input type='text' name='openvpn.maxclients' value='".db_getConfig('openvpn.maxclients', '50')."'></td><td>The Maxmimum numnber of clients that can connect to this OpenVPN Instance</td></tr>";
-  echo "<tr><td>OpenVPN Multiple Login</td><td><input type='text' name='openvpn.multilogin' value='".db_getConfig('openvpn.multilogin', '1194')."'></td><td>The port OpenVPN users connect to (Required)</td></tr>";
+  if(db_getConfig('openvpn.multipleclients') == "on") $client_multi = 'checked';
+  else $client_multi = "";
+  echo "<tr><td>OpenVPN Multiple Login</td><td><input type='hidden' name='openvpn.multipleclients' value='off'><input type='checkbox' name='openvpn.multipleclients' $client_multi></td><td>Allow users to login multiple times</td></tr>";
   $proto = db_getConfig('openvpn.protocol', 'udp');
   $udpchecked = "";
   $tcpchecked = "";
@@ -100,7 +102,10 @@ function conf_doConfigurationBody()
   }
   echo "<tr><td>OpenVPN Protocol</td><td><select name='openvpn.protocol'><option value='tcp'$tcpchecked>TCP</option><option value='udp'$udpchecked>UDP</option></select></td>";
     echo "<td>Protocol Used by OpenVPN, UDP Is Prefered</td></tr>";
-  echo "<tr><td>Network to use for clients</td><td><input type='text' name='openvpn.clientnetwork' value='".db_getConfig('openvpn.clientnetwork', '10.250.250.0/24')."'></td><td>Network to put clients into (x.x.x.x/y notation)</td></tr>";
+  echo "<tr><td>Network to use for clients</td><td><input type='text' name='openvpn.clientnetwork' value='".db_getConfig('openvpn.clientnetwork', '10.250.250.0 255.255.255.0')."'></td><td>Network to put clients into (x.x.x.x/y notation)</td></tr>";
+
+  echo "<tr><td>Management Allowed From</td><td><textarea name='admin.allowednetworks' rows='4'>".db_getConfig('admin.allowednetworks', "10.*\n192.168.*\n127.*\n")."</textarea></td><td>Internal network routes to push to client, one per line</td></tr>";
+
 
   if(db_getConfig('radius.primary') == "on") $rad_prim = 'checked';
   else $rad_prim = "";
@@ -111,7 +116,6 @@ function conf_doConfigurationBody()
 
   // curerntly number of digits is not supported
   // echo "<tr><td>Token Digits</td><td><input type='text' name='token.digits' value='".db_getConfig('token.digits', '6')."'></td><td>Number of digits used by tokens (changing this requires all tokens to be re-issued)</td></tr>";
-  echo "<tr><td>Token Issuer</td><td><input type='text' name='token.issuer' value='".db_getConfig('token.issuer', 'Token Folk')."'></td><td>Friendly name placed on the token in the the users Google Authenticator softwares</td></tr>";
 
 
   echo "<tr><td>Routes to push</td><td><textarea name='openvpn.routes' rows='4'>".db_getConfig('openvpn.routes', "10.0.0.0/8\n192.168.0.0/16\n")."</textarea></td><td>Internal network routes to push to client, one per line</td></tr>";
@@ -121,8 +125,7 @@ function conf_doConfigurationBody()
   echo "</table>";
   echo "</form>";
   echo "<hr>";
-  echo "<div id='mybodyheading'>Certificates</div><br>";
-  echo "<div id='mybodysubheading'>SSL</div><br>";
+  echo "<div class='mybodysubheading'>SSL Certificate</div>";
   echo "Expiration of current cert is: $certleft<br>";
   echo "<form method='post' action='?action=createcert'>";
   echo "<table class='configtable'>";
@@ -136,8 +139,8 @@ function conf_doConfigurationBody()
   echo "<tr><td>Validity (days)</td><td><input type='text' name='cert_valid' value='".db_getConfig('cert.validity', '3650')."''></td><td>Number of days before the cert expires (e.g. 3650 - which is 10 years)</td></tr>";
   echo "<tr><td colspan='3'><input type='submit' name='Save' value='Create Self-Signed Certificate'> - Note that creating a new cert requires all client configuration to be updated</td></tr>";
   echo "</table>";
-  echo "</form>";
-  echo "<div id='mybodysubheading'>DH Key</div>";
+  echo "</form><hr>";
+  echo "<div class='mybodysubheading'>DH Key</div>";
   echo "Creation date of current key: $dhkeyage<br>";
   echo "Click <a href='?action=createdhkey'>here</a> to begin the process of creating a new key - Note: this can take HOURS!!<br>";
 

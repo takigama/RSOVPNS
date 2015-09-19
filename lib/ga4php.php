@@ -269,8 +269,8 @@ abstract class GoogleAuthenticator {
 		$toktype = $data["tokentype"];
 		$key = $this->helperhex2b32($data["tokenkey"]);
 		if($issuer!="") {
-			$issuerMan = urlencode($issuer).":";
-			$issuerEnd = "&issure=".urlencode($issuer);
+			$issuerMan = rawurlencode($issuer).":";
+			$issuerEnd = "&issure=".rawurlencode($issuer);
 		} else {
 			$issuerMan = "";
 			$issuerEnd = "";

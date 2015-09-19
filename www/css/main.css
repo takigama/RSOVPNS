@@ -138,14 +138,14 @@ pre { font-size: 8pt; }
   padding-bottom: 8px;
 }
 
-#userlisthead {
-  font-family: sans-serif;
+/*#userlisthead {
+  font-family: sans-serif;*/
   /*text-align: center;*/
-  font-size: 120%;
+  /*font-size: 120%;
   padding-left: 30px;
-}
+}*/
 
-#mybodyheading {
+.mybodyheading {
   font-size: 150%;
   font-family: sans-serif;
   /*text-align: center;*/
@@ -153,11 +153,28 @@ pre { font-size: 8pt; }
   padding-left: 60px;
 }
 
-#mybodysubheading {
+.mybodysubheading {
   font-family: sans-serif;
   /*text-align: center;*/
   font-size: 120%;
   padding-left: 30px;
+  padding-bottom: 8px;
+}
+
+#server_running {
+  font-family: sans-serif;
+  /*text-align: center;*/
+  padding-left: 4px;
+  padding-right: 4px;
+  color: #44BB44;
+}
+
+#server_stopped {
+  font-family: sans-serif;
+  /*text-align: center;*/
+  padding-left: 4px;
+  padding-right: 4px;
+  color: #CC6666;
 }
 
 #mydebug {
@@ -176,16 +193,18 @@ pre { font-size: 8pt; }
 }
 
 #createusertitle {
-  float:left;
+  /*float:left;*/
   font-size: 115%;
+  padding-left: 30px;
+  padding-bottom: 12px;
   /*font-weight: 300;*/
   padding-right: 8px;
   padding-top: 10px;
 }
 
-#createusertable {
+/*#createusertable {
   float:left;
-}
+}*/
 
 #menu_name {
   text-align: center;

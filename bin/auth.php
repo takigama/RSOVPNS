@@ -2,19 +2,13 @@
 require_once("../config/config.php");
 require_once("../lib/lib.php");
 
-if(!isset($_ENV["username"])) {
-  error_log("Environment variable, username does not exist");
-  failAuth();;
-}
-
-if(!isset($_ENV["password"])) {
-  error_log("Environment variable, password does not exist");
-  failAuth();;
-}
+// we get the user/pass via file passed on cmd line
+// TODO: add some error checking here
+$fh = fopen($argv[1], "r");
+$user = fgets($fh, 4096);
+$pass = fgets($fh, 4096)
 
 $rad_only = db_getConfig("radius.primary", 0);
-$user = $_ENV["username"];
-$pass = $_ENV["password"];
 
 if($rad_only==0 && !db_userExists($user)) {
   error_log("User auth failed - no radius only and user not in database");
@@ -71,7 +65,7 @@ successAuth();
 
 function failAuth()
 {
-  exit(0);
+  exit(1);
 }
 
 function successAuth()

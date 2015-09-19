@@ -113,6 +113,16 @@ function submit_create_user_form_clicked()
   // if post succeeds clear form
 }
 
+function confirm_restart_server()
+{
+  return window.confirm("Really restart server? All users will be disconnected");
+}
+
+function confirm_stop_server()
+{
+  return window.confirm("Really stop server? All users will be disconnected");
+}
+
 function submit_main_config_form()
 {
   $.ajax({

@@ -94,7 +94,7 @@ function user_createPickupData($username)
 
   $tkpid = db_getTokenPickupKey($username);
 
-  $url = $myga->createURL($username, db_getConfig('token.issuer', ''));
+  $url = $myga->createURL($username, db_getConfig('site.ident', ''));
 
 
   file_put_contents("../pickup/$tkpid.url", $url);
@@ -106,13 +106,13 @@ function user_createPickupData($username)
 function users_doUsersBody()
 {
   $myga = new MyGA();
-  echo "<div id='mybodyheading'>Users</div><hr>";
+  echo "<div class='mybodyheading'>Users</div><hr>";
 
 
   echo "<form method='post' id='createuserform'>";
   echo "<div id='createuserframe'>";
 
-    echo "<div id='createusertitle'>Create New</div>";
+    echo "<div id='createusertitle' class='mybodysubheading'>Create New</div>";
 
     echo "<div id='createusertable'>";
       echo "<table class='configtable'>";
@@ -131,7 +131,7 @@ function users_doUsersBody()
 
 
   echo "<div id='userlistframe'>";
-    echo "<div id='userlisthead'>Current Users</div>";
+    echo "<div id='userlisthead' class='mybodysubheading'>Current Users</div>";
     echo "<table class='configtable' id='userlisttable'><tr><th>Username</th><th>Email</th><th>Enabled</th><th>Token</th><th>Password</th><th>Radius</th></tr>";
     $users = db_getUsers();
     foreach($users as $val) {
