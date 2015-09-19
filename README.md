@@ -31,3 +31,8 @@ Then on the web gui...
 - client config should automatically import into the openvpn client (if it knows how)
 - connect!
 - magic!
+
+## TODO:
+1. the code is a mess and there is many MANY security holes on the gui (i.e. dont expose the gui to the internets)
+2. .... so much to do
+
