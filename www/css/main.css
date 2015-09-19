@@ -40,6 +40,22 @@ th { font-size: small; }
 
 pre { font-size: 8pt; }
 
+.loginframe {
+  margin: 0 auto;
+  width: 210px;
+  height: 80px;
+  background-color: #EEEEEE;
+  border-style:solid;
+  margin-top: 120px;
+  padding-top: 12px;
+}
+
+.logininsideframe {
+  font-size: 120%;
+  font-family: sans-serif;
+
+}
+
 #mymenu {
   width:160px;
   overflow:hidden;

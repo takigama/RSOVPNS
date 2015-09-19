@@ -13,6 +13,11 @@ function web_buildPage()
 {
   session_start();
 
+  if(!isset($_SESSION["logged_in"])) {
+    web_doLoginPage();
+    return;
+  }
+
   web_doHeadCheck();
   web_doHeaders();
 
@@ -22,6 +27,44 @@ function web_buildPage()
   web_doPageMiddle();
   web_doPageBottom();
   echo "</div>";
+}
+
+function web_doLoginPage()
+{
+  web_doLoginHeadCheck();
+  web_doHeaders();
+
+  echo "<div id='loginframe' class='loginframe'>";
+  echo "<div class='logininsideframe'>";
+  echo "<form method='post'>";
+  echo "<table><tr><th>Username</th><td><input type='text' name='username'></td></tr>";
+  echo "<tr><th>Password</th><td><input type='password' name='password'></td></tr>";
+  echo "<tr><td colspan='2'><input type='submit' name='login' value='Login'></td></tr>";
+  echo "</form>";
+  echo "</div>";
+  echo "</div>";
+}
+
+function web_doLoginHeadCheck()
+{
+  if(isset($_REQUEST["login"])) {
+    if(isset($_REQUEST["username"])) {
+      if(isset($_REQUEST["password"])) {
+        if(web_doLoginValidateWeb()) {
+          $_SESSION["logged_in"] = $_REQUEST["username"];
+        }
+      }
+    }
+  }
+  return;
+}
+
+function web_doLoginValidateWeb()
+{
+  $pass = $_REQUEST["password"];
+  $user = $_REQUEST["username"];
+  // ... and then....
+  return true;
 }
 
 function web_doHeadCheck()
