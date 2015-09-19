@@ -32,6 +32,11 @@ Then on the web gui...
 - connect!
 - magic!
 
+If you do use two factors (radius + google authenticator or password + google authenticator) not that openvpn
+clients only allow a single entry for password, to have both, you concat them together. So if your password
+was "password" and your google authenticator read "123456" you would type "123456password" into the password
+dialog.
+
 ## Why PHP?
 Yes, its aimed at openwrt so LUA would have been a better option perhaps, but I also want it to be
 portable, and so i've made it in php where it can be easily ported to run on linux/BSD
