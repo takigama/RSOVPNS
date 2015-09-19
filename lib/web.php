@@ -168,7 +168,7 @@ function web_doHeaders()
 
 function web_doPageTop()
 {
-  echo "<div id='myheader_outer'><div id='myheader_inner'>LMNOP</div></div>"; // Real Simple OpenVPN Service
+  echo "<div id='myheader_outer'><div id='myheader_inner'>Real Simple OpenVPN Server</div></div>"; // Real Simple OpenVPN Service
 }
 
 function web_doPageMiddle()
