@@ -16,7 +16,7 @@ My test beds are an AR9331 (GL.inet) router and a TPLink TL-WDR4300
 If you really want to play, heres a rough outline of how you make it work on openwrt:
 - you need basically all the php packages for openwrt
 - add 'list interpreter ".php=/usr/bin/php-cgi"' to the "main" in /etc/config/uhttpd
-- mkdir /vpn; cd /vpn; git clone https://github.com/takigama/RSOVPNS.git; ln -s /vpn /www/vpn
+- mkdir /vpn; cd /vpn; git clone https://github.com/takigama/RSOVPNS.git; ln -s /vpn/www/ /www/vpn
 - reboot or restart uhttpd
 - browse to http://ip_of_thing_you_installed_it_on/vpn/
 - advisable to create the servers dh key on another box as on the router will take HOURS (goes in /vpn/data/server.dh)
@@ -36,3 +36,8 @@ Then on the web gui...
 1. the code is a mess and there is many MANY security holes on the gui (i.e. dont expose the gui to the internets)
 2. .... so much to do
 
+## Thanks and Attributions
+1. OpenVPN coders http://openvpn.net
+2. OpenWRT coders http://openwrt.org
+3. phpqrencode project http://phpqrcode.sourceforge.net/
+4. Myself for GA4PHP https://github.com/takigama/ga4php (which i have not updated in a while)
