@@ -14,7 +14,7 @@ routers health.
 My test beds are an AR9331 (GL.inet) router and a TPLink TL-WDR4300
 
 If you really want to play, heres a rough outline of how you make it work on openwrt:
-- you need basically all the php packages for openwrt
+- you need basically all the php packages for openwrt (but dont add php5-pecl-apc, it causes a crash with any code, not just mine)
 - add 'list interpreter ".php=/usr/bin/php-cgi"' to the "main" in /etc/config/uhttpd
 - mkdir /vpn; cd /vpn; git clone https://github.com/takigama/RSOVPNS.git; ln -s /vpn/www/ /www/vpn
 - reboot or restart uhttpd
