@@ -143,7 +143,8 @@ function ctrl_writeClientFile()
   global $HOMEDIR;
 
   // TODO: fix remote!!!!
-  $config = "remote 10.69.69.219\nport ".db_getConfig("openvpn.port")."\nkeepalive 5 60\nauth-user-pass\nclient\n";
+  $server_remote = $_SERVER['SERVER_NAME'];
+  $config = "remote $server_remote\nport ".db_getConfig("openvpn.port")."\nkeepalive 5 60\nauth-user-pass\nclient\n";
   $config .= "dev tun\nverb 3\ncomp-lzo yes\npersist-key\npersist-tun\n\n<ca>\n".file_get_contents("$HOMEDIR/data/server.crt")."\n</ca>\n";
 
   file_put_contents("$HOMEDIR/data/".db_getConfig("site.ident").".ovpn", $config);
