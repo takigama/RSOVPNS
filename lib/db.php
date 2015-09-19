@@ -54,6 +54,12 @@ function db_getUser($username)
   return $retval;
 }
 
+
+function db_deleteUser()
+{
+    return true;
+}
+
 function db_getConfig($key, $default = -1)
 {
   global $ourdb;

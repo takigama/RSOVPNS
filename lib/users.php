@@ -2,7 +2,6 @@
 
 $WEB_HEADCHECK["USERS"]  = "users_localHeadCheck";
 $MENU_LIST["Users"] = "?action=users";
-$MENU_LIST["testtoken"] = "?action=testtoken";
 
 function users_localHeadCheck() {
   global $WEB_HEADCHECK, $MENU_LIST, $PAGEBODY_FUNCTION;
@@ -16,22 +15,26 @@ function users_localHeadCheck() {
         users_doCreateUser();
         exit(0);
       break;
-      case "testtoken":
-      $PAGEBODY_FUNCTION = "users_testtoken";
+      case "deleteuser":
+        users_deleteUser();
+        exit(0);
       break;
     }
   }
 }
 
-
-function users_testtoken()
+function users_deleteUser()
 {
-  $myga = new MyGA();
+  $username = $_REQUEST["deleteuser"];
 
-  echo "<pre>";
-  //$myga->setUser("asdf");
-  //print_r($myga->internalGetData("asdf"));
-  echo "</pre>";
+  $json = '{ "result": "failure", "reason": "Um...." }';
+
+  if(db_deleteUser($username)) {
+    $json = '{ "result": "success", "reason": "User deleted" }';
+  } else {
+    $json = '{ "result": "failure", "reason": "User not deleted for some reason" }';
+  }
+  echo $json;
 }
 
 function users_doCreateUser()
@@ -91,7 +94,8 @@ function user_createPickupData($username)
 
   $tkpid = db_getTokenPickupKey($username);
 
-  $url = $myga->createURL($username);
+  $url = $myga->createURL($username, db_getConfig('token.issuer', ''));
+
 
   file_put_contents("../pickup/$tkpid.url", $url);
 
@@ -101,6 +105,7 @@ function user_createPickupData($username)
 
 function users_doUsersBody()
 {
+  $myga = new MyGA();
   echo "<div id='mybodyheading'>Users</div><hr>";
 
 
@@ -127,9 +132,49 @@ function users_doUsersBody()
 
   echo "<div id='userlistframe'>";
     echo "<div id='userlisthead'>Current Users</div>";
-    echo "<pre>";
-    print_r(db_getUsers());
-    echo "</pre>";
+    echo "<table class='configtable' id='userlisttable'><tr><th>Username</th><th>Email</th><th>Enabled</th><th>Token</th><th>Password</th><th>Radius</th></tr>";
+    $users = db_getUsers();
+    foreach($users as $val) {
+
+      $uname = $val["Username"];
+
+      $em = $val["Email"];
+      if($em == "") $em = "Not set";
+
+      $ht = $myga->hasToken($uname);
+      $ttype = $myga->getTokenType($uname);
+      $token = "none";
+      $pickedup = "";
+      if($ht) {
+        if($val["TokenPickupKey"] != "") {
+          $tkid = $val["TokenPickupKey"];
+          if(file_exists("../pickup/$tkid.url")) {
+            $pickedup = "<div class='tokenpickupwarn'>Not picked up yet <a href='pickup.php?tkpuid=$tkid'>Pickup URL</a></div>";
+          }
+        }
+        $reset = "<div class='reinittoken'><a href=''>Re-initialise Token</a></div>";
+        $token = "<div class='tokentypeinlist'>$ttype</div>$reset$pickedup";
+      }
+
+      $radius = "no";
+      if($val["Radius"] == 0) $radius = "no";
+      else $radius = "Enabled";
+      $pass = "none";
+      if($val["Password"] != "") {
+        $pass = "Enabled and Set";
+      }
+
+      if($val["Enabled"] == 1) {
+        $enab = "Yes";
+      } else {
+        $enab = "Disabled";
+      }
+
+      $del = "<a href='index.php?action=deleteuser&deleteuser=$uname' onclick='return confirmDeleteUser(\"$uname\")' id='delete_$uname'>Delete</a>";
+
+      echo "<tr id='row_$uname'><td>$uname</td><td>$em</td><td>$enab</td><td>$token</td><td>$pass</td><td>$radius</td><td>$del</td></tr>";
+    }
+    echo "</table>";
   echo "</div>";
 
 

@@ -263,20 +263,27 @@ abstract class GoogleAuthenticator {
 	}
 
 	// create a url compatibile with google authenticator.
-	function createURL($user) {
+	function createURL($user, $issuer='') {
 		// oddity in the google authenticator... hotp needs to be lowercase.
 		$data = $this->internalGetData($user);
 		$toktype = $data["tokentype"];
 		$key = $this->helperhex2b32($data["tokenkey"]);
+		if($issuer!="") {
+			$issuerMan = urlencode($issuer).":";
+			$issuerEnd = "&issure=".urlencode($issuer);
+		} else {
+			$issuerMan = "";
+			$issuerEnd = "";
+		}
 
 		// token counter should be one more then current token value, otherwise
 		// it gets confused
 		$counter = $data["tokencounter"]+1;
 		$toktype = strtolower($toktype);
 		if($toktype == "hotp") {
-			$url = "otpauth://$toktype/$user?secret=$key&counter=$counter";
+			$url = "otpauth://$toktype/$issuerMan$user?secret=$key&counter=$counter$issuerEnd";
 		} else {
-			$url = "otpauth://$toktype/$user?secret=$key";
+			$url = "otpauth://$toktype/$issuerMan$user?secret=$key$issuerEnd";
 		}
 		//echo "url: $url\n";
 		return $url;

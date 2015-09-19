@@ -101,12 +101,19 @@ function conf_doConfigurationBody()
   echo "<tr><td>OpenVPN Protocol</td><td><select name='openvpn.protocol'><option value='tcp'$tcpchecked>TCP</option><option value='udp'$udpchecked>UDP</option></select></td>";
     echo "<td>Protocol Used by OpenVPN, UDP Is Prefered</td></tr>";
   echo "<tr><td>Network to use for clients</td><td><input type='text' name='openvpn.clientnetwork' value='".db_getConfig('openvpn.clientnetwork', '10.250.250.0/24')."'></td><td>Network to put clients into (x.x.x.x/y notation)</td></tr>";
+
   if(db_getConfig('radius.primary') == "on") $rad_prim = 'checked';
   else $rad_prim = "";
   echo "<tr><td>Radius Only Permitted</td><td><input type='hidden' name='radius.primary' value='off'><input type='checkbox' name='radius.primary' $rad_prim></td><td>If a user isn't defined in the local database, do all auth through radius</td></tr>";
   echo "<tr><td>Radius Server</td><td><input type='text' name='radius.server' value='".db_getConfig('radius.server', 'none')."'></td><td>The Server Used for Radius Auth (Optional)</td></tr>";
   echo "<tr><td>Radius Port</td><td><input type='text' name='radius.port' value='".db_getConfig('radius.port', '1819')."'></td><td>The Port Used for Radius Auth (Optional)</td></tr>";
   echo "<tr><td>Radius Secret</td><td><input type='text' name='radius.secret' value='".db_getConfig('radius.secret', '')."'></td><td>The Secret Used for Radius Auth (Optional)</td></tr>";
+
+  // curerntly number of digits is not supported
+  // echo "<tr><td>Token Digits</td><td><input type='text' name='token.digits' value='".db_getConfig('token.digits', '6')."'></td><td>Number of digits used by tokens (changing this requires all tokens to be re-issued)</td></tr>";
+  echo "<tr><td>Token Issuer</td><td><input type='text' name='token.issuer' value='".db_getConfig('token.issuer', 'Token Folk')."'></td><td>Friendly name placed on the token in the the users Google Authenticator softwares</td></tr>";
+
+
   echo "<tr><td>Routes to push</td><td><textarea name='openvpn.routes' rows='4'>".db_getConfig('openvpn.routes', "10.0.0.0/8\n192.168.0.0/16\n")."</textarea></td><td>Internal network routes to push to client, one per line</td></tr>";
   echo "<tr><td>Primary DNS</td><td><input type='text' name='openvpn.dns1' value='".db_getConfig('openvpn.dns1', '8.8.8.8')."'></td><td>Primary DNS Server to push to client</td></tr>";
   echo "<tr><td>Secondary DNS</td><td><input type='text' name='openvpn.dns2' value='".db_getConfig('openvpn.dns2', '8.8.4.4')."'></td><td>Secondary DNS Server to push to client</td></tr>";

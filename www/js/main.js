@@ -10,8 +10,34 @@ $( document ).ready(function() {
     submit_create_user_form_clicked();
   })
 
+  $("#test_token_submit_button").click(function(e) {
+    e.preventDefault();
+    submit_test_token_check();
+  })
+
 })
 
+function submit_test_token_check()
+{
+  $.ajax({
+    url: "index.php?action=testtokencheck",
+    type: "POST",
+    data: $("#tokentestform").serialize(),
+    success: function (data) {
+      console.log(data);
+      result = JSON.parse(data);
+      if(result.result == "failure") {
+        alert("Failed: " + result.reason);
+      }
+      if(result.result == "success") {
+        alert("Yes, it authed successfully!");
+      }
+    },
+    error: function (jXHR, textStatus, errorThrown) {
+        alert(errorThrown);
+    }
+  })
+}
 
 
 function submit_create_user_form_clicked()
@@ -77,6 +103,7 @@ function submit_create_user_form_clicked()
       if(result.result == "success") {
         alert("User Created!");
         clearCreateUserForm();
+        location.reload(true);
       }
     },
     error: function (jXHR, textStatus, errorThrown) {
@@ -106,6 +133,33 @@ function submit_main_config_form()
         alert(errorThrown);
     }
   })
+}
+
+function confirmDeleteUser(username) {
+  var definite = window.confirm("Are you sure you wish to delete "+username+"?");
+
+  if(definite) {
+    $.ajax({
+      url: "index.php?action=deleteuser&user="+username,
+      type: "POST",
+      success: function (data) {
+        result = JSON.parse(data);
+        if(result.result == "failure") {
+          alert("Failed: " + result.reason);
+        }
+        if(result.result == "success") {
+          //alert("User Deleted!");
+          var table = document.getElementById("userlisttable");
+          var rowIndex = document.getElementById("row_"+username).rowIndex;
+          table.deleteRow(rowIndex);
+        }
+      },
+      error: function (jXHR, textStatus, errorThrown) {
+          alert(errorThrown);
+      }
+    })
+  }
+  return false;
 }
 
 
