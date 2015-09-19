@@ -32,9 +32,16 @@ Then on the web gui...
 - connect!
 - magic!
 
+## Why PHP?
+Yes, its aimed at openwrt so LUA would have been a better option perhaps, but I also want it to be
+portable, and so i've made it in php where it can be easily ported to run on linux/BSD
+
 ## TODO:
 1. the code is a mess and there is many MANY security holes on the gui (i.e. dont expose the gui to the internets)
 2. .... so much to do
+
+## Not in the plan:
+1. certificate auth - There are many reasons for this, but ultimately i wanted something simple
 
 ## Thanks and Attributions
 1. OpenVPN coders http://openvpn.net
