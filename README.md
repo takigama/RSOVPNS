@@ -23,6 +23,7 @@ If you really want to play, heres a rough outline of how you make it work on ope
 - chmod a+x /vpn/bin/auth.sh
 
 Then on the web gui...
+- there is no login at the moment, just click the login button
 - edit the configuration
 - create a user (password isnt mandatory)
 - if you gave it a token, pick it up on your device
@@ -32,7 +33,7 @@ Then on the web gui...
 - connect!
 - magic!
 
-If you do use two factors (radius + google authenticator or password + google authenticator) not that openvpn
+If you do use two factors (radius + google authenticator or password + google authenticator) note that openvpn
 clients only allow a single entry for password, to have both, you concat them together. So if your password
 was "password" and your google authenticator read "123456" you would type "123456password" into the password
 dialog.
@@ -42,8 +43,12 @@ Yes, its aimed at openwrt so LUA would have been a better option perhaps, but I 
 portable, and so i've made it in php where it can be easily ported to run on linux/BSD
 
 ## TODO:
-1. the code is a mess and there is many MANY security holes on the gui (i.e. dont expose the gui to the internets)
-2. .... so much to do
+1. form validation
+2. radius code
+3. email code
+
+## DONE:
+1. Fixed database code so that it isnt possible to create an sql injection
 
 ## Not in the plan:
 1. certificate auth - There are many reasons for this, but ultimately i wanted something simple
