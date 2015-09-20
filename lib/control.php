@@ -31,6 +31,13 @@ function ctrl_localHeadCheck()
   }
 }
 
+function ctrl_backupData()
+{
+  /*
+  tar cfz - data | php_encrypt | [ email | download]
+  */
+}
+
 function ctrl_statusPageBody()
 {
 

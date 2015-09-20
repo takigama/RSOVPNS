@@ -121,6 +121,9 @@ function conf_doConfigurationBody()
   echo "<tr><td>Routes to push</td><td><textarea name='openvpn.routes' rows='4'>".web_encode(db_getConfig('openvpn.routes', "10.0.0.0 255.0.0.0\n192.168.0.0 255.255.0.0\n"))."</textarea></td><td>Internal network routes to push to client, one per line</td></tr>";
   echo "<tr><td>Primary DNS</td><td><input type='text' name='openvpn.dns1' value='".web_encode(db_getConfig('openvpn.dns1', '8.8.8.8'))."'></td><td>Primary DNS Server to push to client</td></tr>";
   echo "<tr><td>Secondary DNS</td><td><input type='text' name='openvpn.dns2' value='".web_encode(db_getConfig('openvpn.dns2', '8.8.4.4'))."'></td><td>Secondary DNS Server to push to client</td></tr>";
+
+  echo "<tr><td>Backup Key</td><td><input type='text' name='backup.key' value='".web_encode(db_getConfig('backup.key', '12345678'))."'></td><td>Key used to encrypt the backup of the server (please change from the default!)</td></tr>";
+
   echo "<tr><td colspan='3'><input type='submit' name='Save' value='Save' onclick='validateConfigForm()' id='main_configuration_form'></td></tr>";
   echo "</table>";
   echo "</form>";
