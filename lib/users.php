@@ -138,7 +138,7 @@ function users_doUsersBody()
 
       $uname = $val["Username"];
 
-      $em = $val["Email"];
+      $em = $val["EMail"];
       if($em == "") $em = "Not set";
 
       $ht = $myga->hasToken($uname);

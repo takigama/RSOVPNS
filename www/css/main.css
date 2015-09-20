@@ -43,7 +43,7 @@ pre { font-size: 8pt; }
 .loginframe {
   margin: 0 auto;
   width: 210px;
-  height: 80px;
+  height: 90px;
   background-color: #EEEEEE;
   border-style:solid;
   margin-top: 120px;
@@ -53,7 +53,6 @@ pre { font-size: 8pt; }
 .logininsideframe {
   font-size: 120%;
   font-family: sans-serif;
-
 }
 
 #mymenu {
@@ -72,6 +71,13 @@ pre { font-size: 8pt; }
   background-color: #EEEEEE;
   padding-left: 10px;
   padding-top: 10px;
+}
+
+#failedlogin {
+  font-size: 90%;
+  font-family: sans-serif;
+  color: #DD3333;
+  text-align: center;
 }
 
 #myfooter {

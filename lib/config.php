@@ -44,7 +44,7 @@ function conf_doUpdateConfig()
     } else {
       error_log("++++ push");
       // chrome, et al replace . in form var names with _, which is quite a bit annoying
-      db_setConfig(str_replace("_", ".", $key), $val);
+      db_setConfig(str_replace("_", ".", $key), web_decode($val));
     }
   }
   //echo "</html></pre>";
@@ -84,10 +84,10 @@ function conf_doConfigurationBody()
   echo "<table class='configtable'>";
   echo "<tr><th>Configraution Name</th><th>Value</th><th>Description</th></tr>";
 
-  echo "<tr><td>Site Identifier</td><td><input type='text' name='site.ident' value='".db_getConfig('site.ident', 'OurSite')."'></td><td>Friendly name used to describe the site running openvpn (should be unique)</td></tr>";
+  echo "<tr><td>Site Identifier</td><td><input type='text' name='site.ident' value='".web_encode(db_getConfig('site.ident', 'OurSite'))."'></td><td>Friendly name used to describe the site running openvpn (should be unique)</td></tr>";
 
-  echo "<tr><td>OpenVPN Port</td><td><input type='text' name='openvpn.port' value='".db_getConfig('openvpn.port', '1194')."'></td><td>The port OpenVPN users connect to (Required)</td></tr>";
-  echo "<tr><td>OpenVPN Max Clients</td><td><input type='text' name='openvpn.maxclients' value='".db_getConfig('openvpn.maxclients', '50')."'></td><td>The Maxmimum numnber of clients that can connect to this OpenVPN Instance</td></tr>";
+  echo "<tr><td>OpenVPN Port</td><td><input type='text' name='openvpn.port' value='".web_encode(db_getConfig('openvpn.port', '1194'))."'></td><td>The port OpenVPN users connect to (Required)</td></tr>";
+  echo "<tr><td>OpenVPN Max Clients</td><td><input type='text' name='openvpn.maxclients' value='".web_encode(db_getConfig('openvpn.maxclients', '50'))."'></td><td>The Maxmimum numnber of clients that can connect to this OpenVPN Instance</td></tr>";
   if(db_getConfig('openvpn.multipleclients') == "on") $client_multi = 'checked';
   else $client_multi = "";
   echo "<tr><td>OpenVPN Multiple Login</td><td><input type='hidden' name='openvpn.multipleclients' value='off'><input type='checkbox' name='openvpn.multipleclients' $client_multi></td><td>Allow users to login multiple times</td></tr>";
@@ -102,25 +102,25 @@ function conf_doConfigurationBody()
   }
   echo "<tr><td>OpenVPN Protocol</td><td><select name='openvpn.protocol'><option value='tcp'$tcpchecked>TCP</option><option value='udp'$udpchecked>UDP</option></select></td>";
     echo "<td>Protocol Used by OpenVPN, UDP Is Prefered</td></tr>";
-  echo "<tr><td>Network to use for clients</td><td><input type='text' name='openvpn.clientnetwork' value='".db_getConfig('openvpn.clientnetwork', '10.250.250.0 255.255.255.0')."'></td><td>Network to put clients into (x.x.x.x/y notation)</td></tr>";
+  echo "<tr><td>Network to use for clients</td><td><input type='text' name='openvpn.clientnetwork' value='".web_encode(db_getConfig('openvpn.clientnetwork', '10.250.250.0 255.255.255.0'))."'></td><td>Network to put clients into (x.x.x.x/y notation)</td></tr>";
 
-  echo "<tr><td>Management Allowed From</td><td><textarea name='admin.allowednetworks' rows='4'>".db_getConfig('admin.allowednetworks', "10.*\n192.168.*\n127.*\n")."</textarea></td><td>Internal network routes to push to client, one per line</td></tr>";
+  echo "<tr><td>Management Allowed From</td><td><textarea name='admin.allowednetworks' rows='4'>".web_encode(db_getConfig('admin.allowednetworks', "10.*\n192.168.*\n127.*\n"))."</textarea></td><td>Internal network routes to push to client, one per line</td></tr>";
 
 
   if(db_getConfig('radius.primary') == "on") $rad_prim = 'checked';
   else $rad_prim = "";
   echo "<tr><td>Radius Only Permitted</td><td><input type='hidden' name='radius.primary' value='off'><input type='checkbox' name='radius.primary' $rad_prim></td><td>If a user isn't defined in the local database, do all auth through radius</td></tr>";
-  echo "<tr><td>Radius Server</td><td><input type='text' name='radius.server' value='".db_getConfig('radius.server', 'none')."'></td><td>The Server Used for Radius Auth (Optional)</td></tr>";
-  echo "<tr><td>Radius Port</td><td><input type='text' name='radius.port' value='".db_getConfig('radius.port', '1819')."'></td><td>The Port Used for Radius Auth (Optional)</td></tr>";
-  echo "<tr><td>Radius Secret</td><td><input type='text' name='radius.secret' value='".db_getConfig('radius.secret', '')."'></td><td>The Secret Used for Radius Auth (Optional)</td></tr>";
+  echo "<tr><td>Radius Server</td><td><input type='text' name='radius.server' value='".web_encode(db_getConfig('radius.server', 'none'))."'></td><td>The Server Used for Radius Auth (Optional)</td></tr>";
+  echo "<tr><td>Radius Port</td><td><input type='text' name='radius.port' value='".web_encode(db_getConfig('radius.port', '1819'))."'></td><td>The Port Used for Radius Auth (Optional)</td></tr>";
+  echo "<tr><td>Radius Secret</td><td><input type='text' name='radius.secret' value='".web_encode(db_getConfig('radius.secret', ''))."'></td><td>The Secret Used for Radius Auth (Optional)</td></tr>";
 
   // curerntly number of digits is not supported
   // echo "<tr><td>Token Digits</td><td><input type='text' name='token.digits' value='".db_getConfig('token.digits', '6')."'></td><td>Number of digits used by tokens (changing this requires all tokens to be re-issued)</td></tr>";
 
 
-  echo "<tr><td>Routes to push</td><td><textarea name='openvpn.routes' rows='4'>".db_getConfig('openvpn.routes', "10.0.0.0 255.0.0.0\n192.168.0.0 255.255.0.0\n")."</textarea></td><td>Internal network routes to push to client, one per line</td></tr>";
-  echo "<tr><td>Primary DNS</td><td><input type='text' name='openvpn.dns1' value='".db_getConfig('openvpn.dns1', '8.8.8.8')."'></td><td>Primary DNS Server to push to client</td></tr>";
-  echo "<tr><td>Secondary DNS</td><td><input type='text' name='openvpn.dns2' value='".db_getConfig('openvpn.dns2', '8.8.4.4')."'></td><td>Secondary DNS Server to push to client</td></tr>";
+  echo "<tr><td>Routes to push</td><td><textarea name='openvpn.routes' rows='4'>".web_encode(db_getConfig('openvpn.routes', "10.0.0.0 255.0.0.0\n192.168.0.0 255.255.0.0\n"))."</textarea></td><td>Internal network routes to push to client, one per line</td></tr>";
+  echo "<tr><td>Primary DNS</td><td><input type='text' name='openvpn.dns1' value='".web_encode(db_getConfig('openvpn.dns1', '8.8.8.8'))."'></td><td>Primary DNS Server to push to client</td></tr>";
+  echo "<tr><td>Secondary DNS</td><td><input type='text' name='openvpn.dns2' value='".web_encode(db_getConfig('openvpn.dns2', '8.8.4.4'))."'></td><td>Secondary DNS Server to push to client</td></tr>";
   echo "<tr><td colspan='3'><input type='submit' name='Save' value='Save' onclick='validateConfigForm()' id='main_configuration_form'></td></tr>";
   echo "</table>";
   echo "</form>";
@@ -129,14 +129,14 @@ function conf_doConfigurationBody()
   echo "Expiration of current cert is: $certleft<br>";
   echo "<form method='post' action='?action=createcert'>";
   echo "<table class='configtable'>";
-  echo "<tr><td>Country</td><td><input type='text' name='cert_country' value='".db_getConfig('cert.country', 'GB')."'></td><td>Two letter country code (e.g. US, AU, CN, etc)</td></tr>";
+  echo "<tr><td>Country</td><td><input type='text' name='cert_country' value='".web_encode(db_getConfig('cert.country', 'GB'))."'></td><td>Two letter country code (e.g. US, AU, CN, etc)</td></tr>";
   // px5g selfsigned -days 2048 -newkey rsa:2048 -keyout f.key -out f.pem -subj "/C=GB/ST=London/L=London/O=Global Security/OU=IT Department/CN=example.com"
-  echo "<tr><td>State/Region</td><td><input type='text' name='cert_state' value='".db_getConfig('cert.state', 'London')."''></td><td>State or region of the certificate, (eg NSW, Washington, etc)</td></tr>";
-  echo "<tr><td>Locality</td><td><input type='text' name='cert_locality' value='".db_getConfig('cert.locality', 'London')."''></td><td>City or town (e.g. Sydney, New York, Tokyo)</td></tr>";
-  echo "<tr><td>Organisation</td><td><input type='text' name='cert_org' value='".db_getConfig('cert.organisation', 'Internet Stuff Org')."''></td><td>Name of the organisation who owns the certificate</td></tr>";
-  echo "<tr><td>Department</td><td><input type='text' name='cert_dept' value='".db_getConfig('cert.department', 'IT Admin')."''></td><td>Department who owns the certificate (e.g. Admin)</td></tr>";
-  echo "<tr><td>Common Name</td><td><input type='text' name='cert_cn' value='".db_getConfig('cert.commonname', 'net.internal')."''></td><td>Common Name - URL of the cert (e.g. www.mydomain.com)</td></tr>";
-  echo "<tr><td>Validity (days)</td><td><input type='text' name='cert_valid' value='".db_getConfig('cert.validity', '3650')."''></td><td>Number of days before the cert expires (e.g. 3650 - which is 10 years)</td></tr>";
+  echo "<tr><td>State/Region</td><td><input type='text' name='cert_state' value='".web_encode(db_getConfig('cert.state', 'London'))."''></td><td>State or region of the certificate, (eg NSW, Washington, etc)</td></tr>";
+  echo "<tr><td>Locality</td><td><input type='text' name='cert_locality' value='".web_encode(db_getConfig('cert.locality', 'London'))."''></td><td>City or town (e.g. Sydney, New York, Tokyo)</td></tr>";
+  echo "<tr><td>Organisation</td><td><input type='text' name='cert_org' value='".web_encode(db_getConfig('cert.organisation', 'Internet Stuff Org'))."''></td><td>Name of the organisation who owns the certificate</td></tr>";
+  echo "<tr><td>Department</td><td><input type='text' name='cert_dept' value='".web_encode(db_getConfig('cert.department', 'IT Admin'))."''></td><td>Department who owns the certificate (e.g. Admin)</td></tr>";
+  echo "<tr><td>Common Name</td><td><input type='text' name='cert_cn' value='".web_encode(db_getConfig('cert.commonname', 'net.internal'))."''></td><td>Common Name - URL of the cert (e.g. www.mydomain.com)</td></tr>";
+  echo "<tr><td>Validity (days)</td><td><input type='text' name='cert_valid' value='".web_encode(db_getConfig('cert.validity', '3650'))."''></td><td>Number of days before the cert expires (e.g. 3650 - which is 10 years)</td></tr>";
   echo "<tr><td colspan='3'><input type='submit' name='Save' value='Create Self-Signed Certificate'> - Note that creating a new cert requires all client configuration to be updated</td></tr>";
   echo "</table>";
   echo "</form><hr>";

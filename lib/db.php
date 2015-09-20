@@ -1,6 +1,7 @@
 <?php
 
-global $HOMEDIR, $DB_TYPE, $DB_LOCATION, $MESSAGE, $MESSAGE_TYPE;
+$prepares = array();
+global $HOMEDIR, $DB_TYPE, $DB_LOCATION, $MESSAGE, $MESSAGE_TYPE, $prepares;
 
 try {
   //echo "attempting database\n";
@@ -38,14 +39,18 @@ function db_getUsers()
 
 function db_getUser($username)
 {
-  global $ourdb;
+  global $ourdb, $prepares;
 
-  $users = $ourdb->query("select * from users where Username='$username'");
+  if(!isset($prepares["getusers"])) {
+    $prepares["getusers"] = $ourdb->prepare("select * from users where Username=:user");
+  }
+  $prepares["getusers"]->bindValue(':user', $username, SQLITE3_TEXT);
+  $rows = $prepares["getusers"]->execute();
 
   $retval = array();
   $n = 0;
 
-  while($row = $users->fetchArray()) {
+  while($row = $rows->fetchArray()) {
     $retval = $row;
     $n++;
   }
@@ -65,11 +70,17 @@ function db_getConfig($key, $default = -1)
   global $ourdb;
 
   $users = $ourdb->query("select Value from config where Name='$key'");
+  if(!isset($prepares["getconfig"])) {
+    $prepares["getconfig"] = $ourdb->prepare("select Value from config where Name=:name");
+  }
+  $prepares["getconfig"]->bindValue(':name', $key, SQLITE3_TEXT);
+  $rows = $prepares["getconfig"]->execute();
+
 
   $retval = array();
   $n = 0;
 
-  while($row = $users->fetchArray()) {
+  while($row = $rows->fetchArray()) {
     $retval = $row[0];
     $n++;
   }
@@ -90,13 +101,26 @@ function db_setConfig($key, $value)
   $cval = db_getConfig($key);
 
   if($cval == -1) {
-    $sql = "delete from config where Name='$key'";
-    $ourdb->exec($sql);
-    $sql = "insert into config (Name, Value) values ('$key', '$value')";
-    $ourdb->exec($sql);
+    if(!isset($prepares["deleteconfig"])) {
+      $prepares["deleteconfig"] = $ourdb->prepare("delete from config where Name=:name");
+    }
+    $prepares["deleteconfig"]->bindValue(':name', $key, SQLITE3_TEXT);
+    $prepares["deleteconfig"]->execute();
+
+    if(!isset($prepares["insertconfig"])) {
+      $prepares["insertconfig"] = $ourdb->prepare("insert into config (Name, Value) values (:key, :value)");
+    }
+    $prepares["insertconfig"]->bindValue(':key', $key, SQLITE3_TEXT);
+    $prepares["insertconfig"]->bindValue(':value', $value, SQLITE3_TEXT);
+    $prepares["insertconfig"]->execute();
+
   } else {
-    $sql = "update config set Value='$value' where Name='$key'";
-    $ourdb->exec($sql);
+    if(!isset($prepares["updateconfig"])) {
+      $prepares["updateconfig"] = $ourdb->prepare("update config set Value=:value where Name=:key");
+    }
+    $prepares["updateconfig"]->bindValue(':key', $key, SQLITE3_TEXT);
+    $prepares["updateconfig"]->bindValue(':value', $value, SQLITE3_TEXT);
+    $prepares["updateconfig"]->execute();
   }
 
   return true;
@@ -135,18 +159,23 @@ function db_putTokenData($user, $tokendata)
 {
   global $ourdb, $MESSAGE, $MESSAGE_TYPE;
 
-  $sql = "update users set GAData='$tokendata' where Username='$user'";
-
-  $ourdb->exec($sql);
+  if(!isset($prepares["updateusers"])) {
+    $prepares["updateusers"] = $ourdb->prepare("update users set GAData=:gadata where Username=:user");
+  }
+  $prepares["updateusers"]->bindValue(':gadata', $tokendata, SQLITE3_TEXT);
+  $prepares["updateusers"]->bindValue(':user', $user, SQLITE3_TEXT);
+  $prepares["updateusers"]->execute();
 }
 
 function db_getTokenData($user)
 {
   global $ourdb, $MESSAGE, $MESSAGE_TYPE;
 
-  $sql = "select GAData from users where Username='$user'";
-
-  $userdata = $ourdb->query($sql);
+  if(!isset($prepares["getgadata"])) {
+    $prepares["getgadata"] = $ourdb->prepare("select GAData from users where Username=:user");
+  }
+  $prepares["getgadata"]->bindValue(':user', $user, SQLITE3_TEXT);
+  $userdata = $prepares["getgadata"]->execute();
 
   while($row = $userdata->fetchArray()) {
     $retval = $row[0];
@@ -159,9 +188,11 @@ function db_getTokenPickupKey($user)
 {
   global $ourdb, $MESSAGE, $MESSAGE_TYPE;
 
-  $sql = "select TokenPickupKey from users where Username='$user'";
-
-  $userdata = $ourdb->query($sql);
+  if(!isset($prepares["gettkid"])) {
+    $prepares["gettkid"] = $ourdb->prepare("select TokenPickupKey from users where Username=:user");
+  }
+  $prepares["gettkid"]->bindValue(':user', $user, SQLITE3_TEXT);
+  $userdata = $prepares["gettkid"]->execute();
 
   while($row = $userdata->fetchArray()) {
     $retval = $row[0];
@@ -175,9 +206,12 @@ function db_userExists($lo_username)
   // TODO implement
   global $ourdb, $MESSAGE, $MESSAGE_TYPE;
 
-  $sql = "select count(*) from users where Username = '$lo_username'";
+  if(!isset($prepares["userexists"])) {
+    $prepares["userexists"] = $ourdb->prepare("select count(*) from users where Username=:user");
+  }
+  $prepares["userexists"]->bindValue(':user', $lo_username, SQLITE3_TEXT);
+  $nu = $prepares["userexists"]->execute();
 
-  $nu = $ourdb->query($sql);
 
   //error_log("sql: ".$sql);
   //error_log("doh: ".print_r($nu, true));
@@ -204,19 +238,29 @@ function db_createUser($username, $email, $pass, $radius, $token, $enabled, $tok
   $thisTokenData = "";
   $thisTokenPickupKey = "";
 
-  $sql = "insert into users (Username, EMail, Enabled, Password, Radius) values ('$username', '$email', '$enabled', '$pass_hash', '$radius')";
 
-  $ourdb->exec($sql);
+  if(!isset($prepares["createuser"])) {
+    $prepares["createuser"] = $ourdb->prepare("insert into users (Username, EMail, Enabled, Password, Radius) values (:username, :email, :enabled, :passhash, :radius)");
+  }
+  $prepares["createuser"]->bindValue(':username', $username, SQLITE3_TEXT);
+  $prepares["createuser"]->bindValue(':email', $email, SQLITE3_TEXT);
+  $prepares["createuser"]->bindValue(':enabled', $enabled, SQLITE3_INTEGER);
+  $prepares["createuser"]->bindValue(':passhash', $pass, SQLITE3_TEXT);
+  $prepares["createuser"]->bindValue(':radius', $radius, SQLITE3_INTEGER);
+  $nu = $prepares["createuser"]->execute();
 
   if($token == 1) {
     // create token and pickup url here
+
     $myga = new MyGA();
     $thisTokenPickupKey = $myga->ga_createTokenForUser($token_type, $username);
+    if(!isset($prepares["settokentkid"])) {
+      $prepares["settokentkid"] = $ourdb->prepare("update users set TokenPickupKey=:tkid where Username=:user");
+    }
+    $prepares["settokentkid"]->bindValue(':user', $username, SQLITE3_TEXT);
+    $prepares["settokentkid"]->bindValue(':tkid', $thisTokenPickupKey, SQLITE3_TEXT);
+    $nu = $prepares["settokentkid"]->execute();
   }
-  $sql = "update users set TokenPickupKey='$thisTokenPickupKey' where Username='$username'";
-
-  $ourdb->exec($sql);
-
 }
 
 ?>

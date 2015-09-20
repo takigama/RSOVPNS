@@ -31,18 +31,27 @@ function web_buildPage()
 
 function web_doLoginPage()
 {
-  web_doLoginHeadCheck();
+  if(web_doLoginHeadCheck()) {
+      header("Location: index.php");
+      exit(0);
+  }
   web_doHeaders();
 
+  echo "<html>";
   echo "<div id='loginframe' class='loginframe'>";
   echo "<div class='logininsideframe'>";
   echo "<form method='post'>";
   echo "<table><tr><th>Username</th><td><input type='text' name='username'></td></tr>";
   echo "<tr><th>Password</th><td><input type='password' name='password'></td></tr>";
   echo "<tr><td colspan='2'><input type='submit' name='login' value='Login'></td></tr>";
+  echo "</table>";
+  if(isset($_SESSION["falselogin"])) {
+    echo "<div id='failedlogin'>Login Failed</div>";
+  }
   echo "</form>";
   echo "</div>";
   echo "</div>";
+  echo "</html>";
 }
 
 function web_doLoginHeadCheck()
@@ -52,11 +61,24 @@ function web_doLoginHeadCheck()
       if(isset($_REQUEST["password"])) {
         if(web_doLoginValidateWeb()) {
           $_SESSION["logged_in"] = $_REQUEST["username"];
+          return true;
+        } else {
+          $_SESSION["falselogin"] = true;
         }
       }
     }
   }
-  return;
+  return false;
+}
+
+function web_encode($val)
+{
+  return htmlentities($val, ENT_QUOTES | ENT_COMPAT | ENT_HTML401, ini_get("default_charset"), false);
+}
+
+function web_decode($val)
+{
+  return html_entity_decode($val, ENT_QUOTES | ENT_COMPAT | ENT_HTML401, ini_get("default_charset"));
 }
 
 function web_doLoginValidateWeb()
@@ -132,6 +154,11 @@ function web_localHeadCheck()
       break;
       case "createdhkey":
         web_doCreateDH();
+        exit(0);
+      break;
+      case "logout":
+        unset($_SESSION["logged_in"]);
+        header("Location: index.php");
         exit(0);
       break;
     }
@@ -258,6 +285,9 @@ function web_doPageMenu()
   foreach($MENU_LIST as $name => $mlist) {
     echo "<li><a class='menuitem' id='mi_$name' href='$mlist'>$name</a><br>";
   }
+
+  echo "<hr>";
+  echo "<a href='?action=logout'>Logout</a>";
 }
 
 function web_doPageBottom()
@@ -272,6 +302,8 @@ function web_doPageBottom()
   print_r($_REQUEST);
   echo "\n\nGlobal:\n";
   print_r($_GLOBAL);
+  echo "\n\sSession:\n";
+  print_r($_SESSION);
   echo "\n\nconfigs\nHOMEDIR: $HOMEDIR\nDBTYPE: $DB_TYPE\nDB_LOC: $DB_LOCATION\n";
   echo "\n\nend\n</pre>";
   echo "</div>";
