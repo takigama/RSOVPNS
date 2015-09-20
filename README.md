@@ -19,7 +19,7 @@ If you really want to play, heres a rough outline of how you make it work on ope
 - mkdir /vpn; cd /vpn; git clone https://github.com/takigama/RSOVPNS.git; ln -s /vpn/www/ /www/vpn
 - reboot or restart uhttpd
 - browse to http://ip_of_thing_you_installed_it_on/vpn/
-- advisable to create the servers dh key on another box as on the router will take HOURS (goes in /vpn/data/server.dh)
+- advisable to create the servers dh key on another box as on the router will take HOURS (goes in /vpn/data/server.dh) with the command "openssl gendh 2048 > server.dh"
 - chmod a+x /vpn/bin/auth.sh
 
 Then on the web gui...
