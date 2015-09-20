@@ -46,6 +46,7 @@ portable, and so i've made it in php where it can be easily ported to run on lin
 1. form validation
 2. radius code
 3. email code
+4. code to backup data occasionally
 
 ## DONE:
 1. Fixed database code so that it isnt possible to create an sql injection
