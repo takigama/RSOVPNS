@@ -1,7 +1,7 @@
 <?php
 
 // page for testing tokens, by default, disabled
-$MENU_LIST["testtoken"] = "?action=testtoken";
+$MENU_LIST["Test Token"] = "?action=testtoken";
 
 $WEB_HEADCHECK["TEST"]  = "test_localHeadCheck";
 

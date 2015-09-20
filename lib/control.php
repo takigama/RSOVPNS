@@ -58,6 +58,14 @@ function ctrl_statusPageBody()
   echo "<tr><th>Number of Users</th><td>$n_users</td></tr>";
   echo "</table>";
 
+  echo "<hr><div class='mybodysubheading'>Backups</div>";
+  echo "<table class='configtable'>";
+  echo "<tr><th>Last Backup</th><td>none</td><td>create</td></tr>";
+  echo "<tr><th>Download backup</th><td>backup download link</td></tr>";
+  echo "<tr><th>restore thingy</th><td>backup restore thingo</td></tr>";
+  echo "</table>";
+
+
 }
 
 function ctrl_stopOpenVpn()
