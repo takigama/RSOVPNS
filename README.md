@@ -48,6 +48,7 @@ portable, and so i've made it in php where it can be easily ported to run on lin
 3. email code
 4. code to backup data on schedule
 5. implement logins
+6. so much error checking... so much...
 
 ## DONE:
 1. Fixed database code so that SQL injection shouldn't be possible
