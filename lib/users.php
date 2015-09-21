@@ -35,8 +35,8 @@ function users_reinitToken()
 
   $ttype = $myga->getTokenType($username);
   $oldtkid = db_getTokenPickupKey($username);
-  unlink("../pickup/$oldtkid.url");
-  unlink("../pickup/$oldtkid.png");
+  if(file_exists("../pickup/$oldtkid.url")) unlink("../pickup/$oldtkid.url");
+  if(file_exists("../pickup/$oldtkid.png")) unlink("../pickup/$oldtkid.png");
   db_clearTokenForUser($username);
   $newtkid = $myga->ga_createTokenForUser($ttype, $username);
   db_setTKIDForUser($username, $newtkid);
@@ -47,14 +47,14 @@ function users_reinitToken()
 
 function users_deleteUser()
 {
-  $username = $_REQUEST["deleteuser"];
+  $username = $_REQUEST["user"];
 
   $json = '{ "result": "failure", "reason": "Um...." }';
 
   $oldtkid = db_getTokenPickupKey($username);
   if($oldtkid != "") {
-    unlink("../pickup/$oldtkid.url");
-    unlink("../pickup/$oldtkid.png");
+    if(file_exists("../pickup/$oldtkid.url")) unlink("../pickup/$oldtkid.url");
+    if(file_exists("../pickup/$oldtkid.png")) unlink("../pickup/$oldtkid.png");
   }
 
   if(db_deleteUser($username)) {

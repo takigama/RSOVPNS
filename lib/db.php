@@ -69,6 +69,7 @@ function db_deleteUser($username)
   }
   $prepares["deluser"]->bindValue(':user', $username, SQLITE3_TEXT);
   $prepares["deluser"]->execute();
+  error_log("should have deleted user $username");
 
   return true;
 }
