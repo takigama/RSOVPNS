@@ -60,9 +60,17 @@ function db_getUser($username)
 }
 
 
-function db_deleteUser()
+function db_deleteUser($username)
 {
-    return true;
+  global $ourdb, $prepares;
+
+  if(!isset($prepares["deluser"])) {
+    $prepares["deluser"] = $ourdb->prepare("delete from users where Username=:user");
+  }
+  $prepares["deluser"]->bindValue(':user', $username, SQLITE3_TEXT);
+  $prepares["deluser"]->execute();
+
+  return true;
 }
 
 function db_getConfig($key, $default = -1)
@@ -225,6 +233,32 @@ function db_userExists($lo_username)
   //error_log("user not exists, return false");
 
   return false;
+}
+
+function db_setTKIDForUser($username, $tkid)
+{
+  global $ourdb, $MESSAGE, $MESSAGE_TYPE;
+
+  if(!isset($prepares["settokentkid"])) {
+    $prepares["settokentkid"] = $ourdb->prepare("update users set TokenPickupKey=:tkid where Username=:user");
+  }
+  $prepares["settokentkid"]->bindValue(':user', $username, SQLITE3_TEXT);
+  $prepares["settokentkid"]->bindValue(':tkid', $tkid, SQLITE3_TEXT);
+  $nu = $prepares["settokentkid"]->execute();
+}
+
+function db_clearTokenForUser($username)
+{
+  global $ourdb, $MESSAGE, $MESSAGE_TYPE;
+
+  if(!isset($prepares["deleteusertoken"])) {
+    $prepares["deleteusertoken"] = $ourdb->prepare("update users set TokenPickupKey='',GAData='' where Username=:username");
+  }
+  $prepares["deleteusertoken"]->bindValue(':username', $username, SQLITE3_TEXT);
+  $prepares["deleteusertoken"]->execute();
+
+  return true;
+
 }
 
 function db_createUser($username, $email, $pass, $radius, $token, $enabled, $token_type)

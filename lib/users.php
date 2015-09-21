@@ -19,8 +19,30 @@ function users_localHeadCheck() {
         users_deleteUser();
         exit(0);
       break;
+      case "reinittoken":
+        users_reinitToken();
+        exit(0);
+      break;
     }
   }
+}
+
+function users_reinitToken()
+{
+  $username = $_REQUEST["user"];
+
+  $myga = new MyGA();
+
+  $ttype = $myga->getTokenType($username);
+  $oldtkid = db_getTokenPickupKey($username);
+  unlink("../pickup/$oldtkid.url");
+  unlink("../pickup/$oldtkid.png");
+  db_clearTokenForUser($username);
+  $newtkid = $myga->ga_createTokenForUser($ttype, $username);
+  db_setTKIDForUser($username, $newtkid);
+  user_createPickupData($username);
+
+  header("Location: ?action=users");
 }
 
 function users_deleteUser()
@@ -28,6 +50,12 @@ function users_deleteUser()
   $username = $_REQUEST["deleteuser"];
 
   $json = '{ "result": "failure", "reason": "Um...." }';
+
+  $oldtkid = db_getTokenPickupKey($username);
+  if($oldtkid != "") {
+    unlink("../pickup/$oldtkid.url");
+    unlink("../pickup/$oldtkid.png");
+  }
 
   if(db_deleteUser($username)) {
     $json = '{ "result": "success", "reason": "User deleted" }';
@@ -152,7 +180,7 @@ function users_doUsersBody()
             $pickedup = "<div class='tokenpickupwarn'>Not picked up yet <a href='pickup.php?tkpuid=$tkid'>Pickup URL</a></div>";
           }
         }
-        $reset = "<div class='reinittoken'><a href=''>Re-initialise Token</a></div>";
+        $reset = "<div class='reinittoken'><a href='?action=reinittoken&user=".rawurlencode($uname)."'>Re-initialise Token</a></div>";
         $token = "<div class='tokentypeinlist'>$ttype</div>$reset$pickedup";
       }
 

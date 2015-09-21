@@ -126,7 +126,7 @@ function conf_doConfigurationBody()
   echo "<tr><td>Backup Key</td><td><input type='text' name='backup.key' value='".web_encode(db_getConfig('backup.key', '12345678'))."'></td><td class='help_tr'>Key used to encrypt the backup of the server (please change from the default!)</td></tr>";
   if(db_getConfig('admin.forcessl', 0) == "on") $force_ssl = 'checked';
   else $force_ssl = "";
-  echo "<tr><td>Force SSL</td><td><input type='hidden' name='admin.forcessl' value='off'><input type='checkbox' name='admin.forcessl' $force_ssl></td><td class='help_tr'>Allow users to login multiple times</td></tr>";
+  echo "<tr><td>Force SSL</td><td><input type='hidden' name='admin.forcessl' value='off'><input type='checkbox' name='admin.forcessl' $force_ssl></td><td class='help_tr'>Force used (via redirect) to come into the page via SSL</td></tr>";
 
   echo "<tr><td colspan='3'><input type='submit' name='Save' value='Save' onclick='validateConfigForm()' id='main_configuration_form'></td></tr>";
   echo "</table>";
