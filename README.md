@@ -46,12 +46,13 @@ portable, and so i've made it in php where it can be easily ported to run on lin
 1. form validation
 2. radius code
 3. email code
-4. code to backup data occasionally
-5. implement management address limitations
-6. implement logins
+4. code to backup data on schedule
+5. implement logins
 
 ## DONE:
-1. Fixed database code so that it isnt possible to create an sql injection
+1. Fixed database code so that SQL injection shouldn't be possible
+2. backups code working
+3. management address limitations now work
 
 ## Not in the plan:
 1. certificate auth - There are many reasons for this, but ultimately i wanted something simple
