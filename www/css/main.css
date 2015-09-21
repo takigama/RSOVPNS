@@ -102,12 +102,21 @@ pre { font-size: 8pt; }
   border-color: #000000;*/
 }
 
+.control_tr {
+  font-family: sans-serif;
+  text-align: right;
+  /*background-color: #DDEEDD;*/
+  text-indent: 12px;
+  font-style: italic;
+  font-weight: bold;
+}
+
 #myheader_outer {
   font-size: 150%;
   font-family: sans-serif;
   text-align: center;
-  padding-top: 0px;
-  padding-bottom: 8px;
+  padding-top: 12px;
+  padding-bottom: 12px;
 }
 
 #message_outer {

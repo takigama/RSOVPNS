@@ -125,27 +125,54 @@ function confirm_stop_server()
 
 function send_do_backup()
 {
-  $.ajax({
-    url: "index.php?action=createbackup",
-    type: "POST",
-    data: $("#createuserform").serialize(),
-    success: function (data) {
-      result = JSON.parse(data);
-      if(result.result == "failure") {
-        alert("Failed: " + result.reason);
+    $.ajax({
+      url: "index.php?action=createbackup",
+      type: "POST",
+      data: $("#createuserform").serialize(),
+      success: function (data) {
+        result = JSON.parse(data);
+        if(result.result == "failure") {
+          alert("Failed: " + result.reason);
+        }
+        if(result.result == "success") {
+          alert("Backup Started!");
+          location.reload(true);
+        }
+      },
+      error: function (jXHR, textStatus, errorThrown) {
+          alert(errorThrown);
       }
-      if(result.result == "success") {
-        alert("Backup Started!");
-        clearCreateUserForm();
-        location.reload(true);
-      }
-    },
-    error: function (jXHR, textStatus, errorThrown) {
-        alert(errorThrown);
-    }
-  })
+    })
 
   return false;
+}
+
+
+function send_do_restore_inplace()
+{
+  var definite = window.confirm("READ CAREFULLY! You are about to delete all configuration and replace it with what is in the current backup, are you sure?");
+
+  if(definite) {
+    $.ajax({
+      url: "index.php?action=restorefrominplace",
+      type: "POST",
+      data: $("#createuserform").serialize(),
+      success: function (data) {
+        result = JSON.parse(data);
+        if(result.result == "failure") {
+          alert("Failed: " + result.reason);
+        }
+        if(result.result == "success") {
+          alert("Restore Started!");
+          location.reload(true);
+        }
+      },
+      error: function (jXHR, textStatus, errorThrown) {
+          alert(errorThrown);
+      }
+    })
+  }
+
 }
 
 function submit_main_config_form()

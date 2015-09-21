@@ -172,7 +172,7 @@ function users_doUsersBody()
 
       $del = "<a href='index.php?action=deleteuser&deleteuser=$uname' onclick='return confirmDeleteUser(\"$uname\")' id='delete_$uname'>Delete</a>";
 
-      echo "<tr id='row_$uname'><td>$uname</td><td>$em</td><td>$enab</td><td>$token</td><td>$pass</td><td>$radius</td><td>$del</td></tr>";
+      echo "<tr id='row_$uname'><td>$uname</td><td>$em</td><td>$enab</td><td>$token</td><td>$pass</td><td>$radius</td><td class='control_tr'>$del</td></tr>";
     }
     echo "</table>";
   echo "</div>";

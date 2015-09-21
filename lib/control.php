@@ -35,6 +35,10 @@ function ctrl_localHeadCheck()
         ctrl_downloadBackup();
         exit(0);
       break;
+      case "restorefrominplace":
+        ctrl_restoreFromInPlace();
+        exit(0);
+      break;
     }
   }
 }
@@ -42,7 +46,7 @@ function ctrl_localHeadCheck()
 function ctrl_downloadBackup()
 {
   global $HOMEDIR;
-  
+
   $info = file_get_contents("$HOMEDIR/data/backup.bk");
   header('Content-Description: File Transfer');
   header('Content-Type: application/octet-stream');
@@ -70,6 +74,24 @@ function ctrl_backupData()
 
 }
 
+function ctrl_restoreFromInPlace()
+{
+  /*
+  tar cfz - data | php_encrypt | [ email | download]
+
+  */
+
+  $key = db_getConfig('backup.key', '12345678');
+  $cmd = "cd ../; cat data/backup.bk | openssl aes-256-cbc -d -k $key | tar xfz -";
+
+  system("$cmd > /tmp/restore.log 2>&1 &");
+
+  $json = '{ "result": "success", "reason": "Restore Started" }';
+
+  echo $json;
+
+}
+
 function ctrl_statusPageBody()
 {
 
@@ -86,7 +108,7 @@ function ctrl_statusPageBody()
   echo "<div class='mybodyheading'>Status</div><hr>";
   echo "<div class='mybodysubheading'>OpenVPN</div>";
   echo "<table class='configtable'>";
-  echo "<tr><th>Server Status</th><td>$server_status</td><td>$control_options</td></tr>";
+  echo "<tr><th>Server Status</th><td>$server_status</td><td class='control_tr'>$control_options</td></tr>";
   echo "<tr><th>Number of Users</th><td>$n_users</td></tr>";
   echo "</table>";
 
@@ -103,9 +125,10 @@ function ctrl_statusPageBody()
 
   echo "<hr><div class='mybodysubheading'>Backups</div>";
   echo "<table class='configtable'>";
-  echo "<tr><th>Last Backup</th><td>$bk_time</td><td><a href='#' onclick='return send_do_backup()'>Create</a></td></tr>";
+  echo "<tr><th>Last Backup</th><td>$bk_time</td><td class='control_tr'><a href='#' onclick='return send_do_backup()'>Create</a></td></tr>";
   echo "<tr><th>Download backup</th><td>$download</td></tr>";
-  echo "<tr><th>restore thingy</th><td>backup restore thingo</td></tr>";
+  echo "<tr><th>Restore (Upload)</th><td>backup restore thingo</td></tr>";
+  echo "<tr><th>Restore (from current)</th><td  class='control_tr'><a href='#' onclick='return send_do_restore_inplace()'>Begin</a></td></tr>";
   echo "</table>";
 
 
