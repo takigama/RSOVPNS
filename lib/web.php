@@ -293,7 +293,7 @@ function web_doPageMenu()
 function web_doPageBottom()
 {
 
-  echo "<div id='myfooter'>Copywrite PJR 2015</div>";
+  echo "<div id='myfooter'><a href='http://www.gnu.org/licenses/gpl-2.0.html'>GPL</a> software by <a href='https://github.com/takigama'>Takigama</a> &copy 2015</div>";
   global $HOMEDIR, $DB_TYPE, $DB_LOCATION;
   echo "<div id='mydebug'>";
   echo "<pre>\n\nServer:\n";

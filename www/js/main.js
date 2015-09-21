@@ -123,6 +123,31 @@ function confirm_stop_server()
   return window.confirm("Really stop server? All users will be disconnected");
 }
 
+function send_do_backup()
+{
+  $.ajax({
+    url: "index.php?action=createbackup",
+    type: "POST",
+    data: $("#createuserform").serialize(),
+    success: function (data) {
+      result = JSON.parse(data);
+      if(result.result == "failure") {
+        alert("Failed: " + result.reason);
+      }
+      if(result.result == "success") {
+        alert("Backup Started!");
+        clearCreateUserForm();
+        location.reload(true);
+      }
+    },
+    error: function (jXHR, textStatus, errorThrown) {
+        alert(errorThrown);
+    }
+  })
+
+  return false;
+}
+
 function submit_main_config_form()
 {
   $.ajax({

@@ -27,15 +27,47 @@ function ctrl_localHeadCheck()
         header("Location: index.php?action=status");
         exit(0);
       break;
+      case "createbackup":
+        ctrl_backupData();
+        exit(0);
+      break;
+      case "downloadbackup":
+        ctrl_downloadBackup();
+        exit(0);
+      break;
     }
   }
+}
+
+function ctrl_downloadBackup()
+{
+  global $HOMEDIR;
+  
+  $info = file_get_contents("$HOMEDIR/data/backup.bk");
+  header('Content-Description: File Transfer');
+  header('Content-Type: application/octet-stream');
+  header('Content-Disposition: attachment; filename="backup.bk"');
+  header('Content-Transfer-Encoding: binary');
+  header('Content-Length: ' . strlen($info));
+  echo $info;
+
 }
 
 function ctrl_backupData()
 {
   /*
   tar cfz - data | php_encrypt | [ email | download]
+
   */
+
+  $cmd = "cd ../; tar cfz - data | openssl enc -aes-256-cbc -k '".db_getConfig('backup.key', '12345678')."' > /tmp/.backuptest.tar.gz; mv /tmp/.backuptest.tar.gz data/backup.bk";
+
+  system("$cmd > /tmp/backup.log 2>&1 &");
+
+  $json = '{ "result": "success", "reason": "Backup Started" }';
+
+  echo $json;
+
 }
 
 function ctrl_statusPageBody()
@@ -58,10 +90,21 @@ function ctrl_statusPageBody()
   echo "<tr><th>Number of Users</th><td>$n_users</td></tr>";
   echo "</table>";
 
+  if(file_exists("../data/backup.bk")) {
+    $backuptime = date ("F d Y H:i:s.", filemtime("../data/backup.bk"));
+    $td = round((filemtime("../data/backup.bk")-time())/(24*3600));
+    if($td > 1 ) $bk_time = "$td days ago ($backuptime)";
+    if($td <= 0 ) $bk_time = " Today ($backuptime)";
+    $download = "<a href='index.php?action=downloadbackup'>Download</a>";
+  } else {
+    $bk_time = "None Exists";
+    $download = "";
+  }
+
   echo "<hr><div class='mybodysubheading'>Backups</div>";
   echo "<table class='configtable'>";
-  echo "<tr><th>Last Backup</th><td>none</td><td>create</td></tr>";
-  echo "<tr><th>Download backup</th><td>backup download link</td></tr>";
+  echo "<tr><th>Last Backup</th><td>$bk_time</td><td><a href='#' onclick='return send_do_backup()'>Create</a></td></tr>";
+  echo "<tr><th>Download backup</th><td>$download</td></tr>";
   echo "<tr><th>restore thingy</th><td>backup restore thingo</td></tr>";
   echo "</table>";
 
