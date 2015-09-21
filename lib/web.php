@@ -389,6 +389,7 @@ function web_pickupCheckPost()
       header("Content-Type: image/png");
       echo file_get_contents("../pickup/$tid.png");
       unlink("../pickup/$tid.png");
+      db_clearTKIDForUser($tid);
       exit(0);
     }
   }

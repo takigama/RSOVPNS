@@ -247,6 +247,20 @@ function db_setTKIDForUser($username, $tkid)
   $nu = $prepares["settokentkid"]->execute();
 }
 
+function db_clearTKIDForUser($tkid)
+{
+  global $ourdb, $MESSAGE, $MESSAGE_TYPE;
+
+  if(!isset($prepares["deletetkid"])) {
+    $prepares["deletetkid"] = $ourdb->prepare("update users set TokenPickupKey='' where TokenPickupKey=:tkid");
+  }
+  $prepares["deletetkid"]->bindValue(':tkid', $tkid, SQLITE3_TEXT);
+  $prepares["deletetkid"]->execute();
+
+  return true;
+}
+
+
 function db_clearTokenForUser($username)
 {
   global $ourdb, $MESSAGE, $MESSAGE_TYPE;
@@ -258,7 +272,6 @@ function db_clearTokenForUser($username)
   $prepares["deleteusertoken"]->execute();
 
   return true;
-
 }
 
 function db_createUser($username, $email, $pass, $radius, $token, $enabled, $token_type)

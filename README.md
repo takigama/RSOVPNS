@@ -53,6 +53,7 @@ portable, and so i've made it in php where it can be easily ported to run on lin
 1. Fixed database code so that SQL injection shouldn't be possible
 2. backups code working
 3. management address limitations now work
+4. cleanup code for pickup ids and token pickups in various cases (token re-init, delete user, etc)
 
 ## Not in the plan:
 1. certificate auth - There are many reasons for this, but ultimately i wanted something simple
