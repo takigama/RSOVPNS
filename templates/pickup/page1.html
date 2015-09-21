@@ -1,13 +1,15 @@
 <html>
 <h1>Token Pickup</h1>
 <hr>
-Welcome to the token pickup page, here you must do things, most important ensure that you have:
+Welcome to the token pickup page, here you must do things, most important ensure that you have<br>:
+
 
 <li> Your mobile device
 <li> Google Authenticator installed on your device
 <li> A Barcode scanner (one is in-build to google authenticator)
 <li> If scanning the QR code from the desktop, ensure you have privacy
 <li> Token can only be retrived once, so if you make a mistake, a new token must be created.
+<br><br>
 
 <br><br>
 You may now either continue from this page from your desktop or mobile device once the above have been completed.
@@ -36,5 +38,12 @@ function sureClicked() {
 </script>
 <form>Yes, I am sure I am ready to recieve my token <input type="checkbox" name="sure" id="id_surecheckbox" onchange="sureClicked()"></form><br>
 <div id="definitely_get_this" style="display: none;">Click <a href="#" id="id_gettoken"></a> to continue</div><br>
+
+You can get google authenticator at one of the following links<br>
+<a href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2">
+  <img alt="Get it on Google Play"
+       src="https://developer.android.com/images/brand/en_generic_rgb_wo_45.png" />
+</a> <a href="https://geo.itunes.apple.com/au/app/google-authenticator/id388497605?mt=8" style="display:inline-block;overflow:hidden;background:url(http://linkmaker.itunes.apple.com/images/badges/en-us/badge_appstore-lrg.svg) no-repeat;width:165px;height:40px;"></a>
+
 
 </html>

@@ -13,6 +13,11 @@ function web_buildPage()
 {
   session_start();
 
+  if(!web_checkMgmtIP()) {
+    header("Location: noaccess.html");
+    return;
+  }
+
   if(!isset($_SESSION["logged_in"])) {
     web_doLoginPage();
     return;
@@ -66,6 +71,27 @@ function web_doLoginHeadCheck()
           $_SESSION["falselogin"] = true;
         }
       }
+    }
+  }
+  return false;
+}
+
+function web_checkMgmtIP()
+{
+  $ips = explode(" ", trim(preg_replace('/\s\s+/', ' ', db_getConfig("admin.allowednetworks"))));
+  $from_addr = $_SERVER["REMOTE_ADDR"];
+
+  foreach($ips as $val) {
+    //$valnew = str_replace(":", '\\:', $val);
+    $valnew = $val;
+    //file_put_contents("/tmp/f.txt",$valnew);
+    //error_log("checking $from_addr against $valnew");
+
+    if(preg_match("/$val/", $from_addr)) {
+      //error_log("Yes: $from_addr, $valnew");
+      return true;
+    } else {
+      //error_log("no: $from_addr, $valnew");
     }
   }
   return false;

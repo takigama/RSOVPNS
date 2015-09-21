@@ -1,6 +1,6 @@
 <?php
 
-$MENU_LIST["Status"] = "?action=status";
+$MENU_LIST["Management"] = "?action=status";
 $WEB_HEADCHECK["Control"]  = "ctrl_localHeadCheck";
 
 function ctrl_localHeadCheck()

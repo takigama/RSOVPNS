@@ -102,6 +102,13 @@ pre { font-size: 8pt; }
   border-color: #000000;*/
 }
 
+.help_tr {
+  font-family: sans-serif;
+  text-align: left;
+  /*background-color: #DDEEDD;*/
+  font-style: italic;
+}
+
 .control_tr {
   font-family: sans-serif;
   text-align: right;
