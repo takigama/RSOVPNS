@@ -48,6 +48,18 @@ input[type="text"] {
     width: 200px;
 }
 
+input[type="password"] {
+    width: 200px;
+}
+
+input[type="text"].logintext {
+  width: 136px;
+}
+
+input[type="password"].logintext {
+  width: 136px;
+}
+
 .loginframe {
   margin: 0 auto;
   width: 210px;

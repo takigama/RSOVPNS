@@ -46,8 +46,8 @@ function web_doLoginPage()
   echo "<div id='loginframe' class='loginframe'>";
   echo "<div class='logininsideframe'>";
   echo "<form method='post'>";
-  echo "<table><tr><th>Username</th><td><input type='text' name='username'></td></tr>";
-  echo "<tr><th>Password</th><td><input type='password' name='password'></td></tr>";
+  echo "<table><tr><th>Username</th><td><input type='text' name='username' class='logintext'></td></tr>";
+  echo "<tr><th>Password</th><td><input type='password' name='password' class='logintext'></td></tr>";
   echo "<tr><td colspan='2'><input type='submit' name='login' value='Login'></td></tr>";
   echo "</table>";
   if(isset($_SESSION["falselogin"])) {

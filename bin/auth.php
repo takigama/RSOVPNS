@@ -10,7 +10,7 @@ $pass = trim(fgets($fh, 4096));
 
 $rad_only = db_getConfig("radius.primary", 0);
 
-if($rad_only==0 && !db_userExists($user)) {
+if($rad_only=="on" && !db_userExists($user)) {
   error_log("User auth failed - no radius only and user not in database");
   failAuth();;
 }
@@ -65,11 +65,13 @@ successAuth();
 
 function failAuth()
 {
+  error_log("auth fail");
   exit(1);
 }
 
 function successAuth()
 {
+  error_log("auth success");
   exit(0);
 }
 ?>
