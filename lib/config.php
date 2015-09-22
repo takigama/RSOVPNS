@@ -112,6 +112,9 @@ function conf_doConfigurationBody()
   else $rad_prim = "";
   echo "<tr><td>Radius Only Permitted</td><td><input type='hidden' name='radius.primary' value='off'><input type='checkbox' name='radius.primary' $rad_prim></td><td class='help_tr'>If a user isn't defined in the local database, do all auth through radius</td></tr>";
   echo "<tr><td>Radius Server</td><td><input type='text' name='radius.server' value='".web_encode(db_getConfig('radius.server', 'none'))."'></td><td class='help_tr'>The Server Used for Radius Auth (Optional)</td></tr>";
+  $thisnasip = "127.0.0.1";
+  if(isset($_SERVER["SERVER_ADDR"])) $thisnasip = $_SERVER["SERVER_ADDR"];
+  echo "<tr><td>Radius NAS IP</td><td><input type='text' name='radius.nasip' value='".web_encode(db_getConfig('radius.nasip', $thisnasip))."'></td><td class='help_tr'>Some radius servers require a NAS IP and this wont auto-detect it. Should be set to the local ip of this machine/router.</td></tr>";
   echo "<tr><td>Radius Port</td><td><input type='text' name='radius.port' value='".web_encode(db_getConfig('radius.port', '1819'))."'></td><td class='help_tr'>The Port Used for Radius Auth (Optional)</td></tr>";
   echo "<tr><td>Radius Secret</td><td><input type='text' name='radius.secret' value='".web_encode(db_getConfig('radius.secret', ''))."'></td><td class='help_tr'>The Secret Used for Radius Auth (Optional)</td></tr>";
 
