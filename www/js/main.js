@@ -116,13 +116,13 @@ function send_update_user_values()
       if(result.result == "failure") {
         $("#usereditboxid").toggleClass("show");
         $("#usereditboxid").hide();
-        alert("Failed: " + result.reason);
+        //alert("Failed: " + result.reason);
       }
       if(result.result == "success") {
         $("#usereditboxid").toggleClass("show");
         $("#usereditboxid").hide();
-        alert("User Updated");
-        console.log("no do reload...");
+        //alert("User Updated");
+        //console.log("no do reload...");
         location.reload(true);
       }
     },

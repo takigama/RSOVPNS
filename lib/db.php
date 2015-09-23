@@ -164,6 +164,37 @@ function db_createDB()
 
 }
 
+function db_updateUserPassword($user, $pass)
+{
+  global $ourdb, $MESSAGE, $MESSAGE_TYPE;
+
+  if($pass != "" ) $pass_hash = hash(sha256, $pass);
+  else $pass_hash = "";
+
+  error_log("pass hash ($user): $pass_hash");
+
+  if(!isset($prepares["updatepass"])) {
+    $prepares["updatepass"] = $ourdb->prepare("update users set Password=:pass where Username=:user");
+  }
+  //error_log("in db exchange for user pass");
+  $prepares["updatepass"]->bindValue(':pass', $pass_hash, SQLITE3_TEXT);
+  $prepares["updatepass"]->bindValue(':user', $user, SQLITE3_TEXT);
+  $prepares["updatepass"]->execute();
+
+}
+
+function db_updateEmailForUser($user, $email)
+{
+  global $ourdb, $MESSAGE, $MESSAGE_TYPE;
+
+  if(!isset($prepares["updateemail"])) {
+    $prepares["updateemail"] = $ourdb->prepare("update users set Email=:email where Username=:user");
+  }
+  $prepares["updateemail"]->bindValue(':email', $email, SQLITE3_TEXT);
+  $prepares["updateemail"]->bindValue(':user', $user, SQLITE3_TEXT);
+  $prepares["updateemail"]->execute();
+}
+
 function db_changeRadiusForUser($user, $radius)
 {
   global $ourdb, $MESSAGE, $MESSAGE_TYPE;

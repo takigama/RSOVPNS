@@ -36,23 +36,45 @@ function users_editUserVals()
   error_log("input incoming");
   error_log(print_r($_REQUEST,true));
   $user = $_REQUEST["user"];
+  $result = false;
+
+  $message_text = "successfully updated $user";
 
   switch($_REQUEST["type"]) {
     case "enabled":
       $enab = $_REQUEST["user_enabled"];
       if($enab == "on") {
         db_changeEnablesForUser($user, 1);
+        $result = true;
+        $message_text = "$user is now enabled";
       } else {
         db_changeEnablesForUser($user, 0);
+        $result = true;
+        $message_text = "$user is now disabled";
       }
     break;
     case "email":
       $email = $_REQUEST["email"];
-
+      db_updateEmailForUser($user, $email);
+      $result = true;
+      $message_text = "Updated email for $user";
     break;
     case "password":
+      error_log("start password update");
+      if(isset($_REQUEST["clear"])) {
+        $pass1 = "";
+        $pass2 = "";
+      }
       $pass1 = $_REQUEST["pass1"];
       $pass2 = $_REQUEST["pass2"];
+      if($pass1 != $pass2) {
+        $json = '{ "result": "failure", "reason": "Passwords dont match" }';
+      } else {
+        $result = db_updateUserPassword($user, $pass1);
+        $result = true;
+        $message_text = "Updated password for $user";
+      }
+
     break;
     case "token":
       $newtoken = $_REQUEST["tokentype"];
@@ -60,23 +82,29 @@ function users_editUserVals()
     case "radius":
       $radius = $_REQUEST["radius_enabled"];
       if($radius == "on") {
+        $result = true;
         error_log("turning on radius for $user ($radius)");
+        $message_text = "Radius is now enabled for $user";
         db_changeRadiusForUser($user, 1);
       } else {
+        $result = true;
         error_log("turning off radius for $user ($radius)");
+        $message_text = "Radius is now disabled for $user";
         db_changeRadiusForUser($user, 0);
       }
+
     break;
   }
 
 
-  if(true) {
+  if($result) {
+    $_SESSION["messages"]["updateuser"]["type"] = 1;
+    $_SESSION["messages"]["updateuser"]["text"] = $message_text;
     $json = '{ "result": "success", "reason": "User Updated" }';
-  } else {
-    $json = '{ "result": "failure", "reason": "User update failed" }';
   }
   echo $json;
 
+  exit(0);
 }
 
 function users_reinitToken()
@@ -212,6 +240,7 @@ function users_doUsersBody()
 
   echo "<div id='userlistframe'>";
     echo "<div id='userlisthead' class='mybodysubheading'>Current Users</div>";
+    echo "<div id='searchbox'><form><input type='text' name='searchval' placeholder='Type to search' id='search_entry'></form></div>";
     echo "<table class='configtable' id='userlisttable'><tr><th>Username</th><th>Email</th><th>Enabled</th><th>Token</th><th>Password</th><th>Radius</th></tr>";
     $users = db_getUsers();
     foreach($users as $val) {
@@ -239,6 +268,7 @@ function users_doUsersBody()
       $radius = "no";
       if($val["Radius"] == 0) $radius = "no";
       else $radius = "Enabled";
+
       $pass = "none";
       if($val["Password"] != "") {
         $pass = "Enabled and Set";
@@ -265,7 +295,22 @@ function users_doUsersBody()
   echo "</div>";
   echo "<div class='usereditbox' id='usereditboxid'></div>";
 
-
+  // doing this js here is a little ugly, but ahh well.
+  echo "<script type='text/javascript'>";
+?>
+var $rows = $('#userlisttable tr');
+console.log("rows:");
+console.log($rows);
+$('#search_entry').keyup(function() {
+  var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
+  console.log("keyup event");
+  $rows.show().filter(function() {
+      var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
+      return !~text.indexOf(val);
+  }).hide();
+});
+<?php
+  echo "</script>";
 
 }
 ?>
