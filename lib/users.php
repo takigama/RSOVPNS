@@ -78,6 +78,25 @@ function users_editUserVals()
     break;
     case "token":
       $newtoken = $_REQUEST["tokentype"];
+      $myga = new MyGA();
+
+      if($newtoken != "none") {
+        $ttype = $newtoken;
+        $oldtkid = db_getTokenPickupKey($user);
+        if(file_exists("../pickup/$oldtkid.url")) unlink("../pickup/$oldtkid.url");
+        if(file_exists("../pickup/$oldtkid.png")) unlink("../pickup/$oldtkid.png");
+        db_clearTokenForUser($user);
+        $newtkid = $myga->ga_createTokenForUser($ttype, $user);
+        db_setTKIDForUser($user, $newtkid);
+        user_createPickupData($user);
+      } else {
+        $oldtkid = db_getTokenPickupKey($user);
+        if(file_exists("../pickup/$oldtkid.url")) unlink("../pickup/$oldtkid.url");
+        if(file_exists("../pickup/$oldtkid.png")) unlink("../pickup/$oldtkid.png");
+        db_clearTokenForUser($user);
+      }
+      $message_text = "Created new token ($ttype) for $user";
+      $result = true;
     break;
     case "radius":
       $radius = $_REQUEST["radius_enabled"];
