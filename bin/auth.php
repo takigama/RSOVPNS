@@ -15,7 +15,7 @@ if($rad_only=="on" && !db_userExists($user)) {
   failAuth();;
 }
 
-if($rad_only==1 && !db_userExists($user)) {
+if($rad_only=="on" && !db_userExists($user)) {
   $result = radius_doAuth($user, $pass);
   if(!$result) failAuth();
   else suceessAuth();
