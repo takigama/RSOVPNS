@@ -260,7 +260,7 @@ function users_doUsersBody()
   echo "<div id='userlistframe'>";
     echo "<div id='userlisthead' class='mybodysubheading'>Current Users</div>";
     echo "<div id='searchbox'><form><input type='text' name='searchval' placeholder='Type to search' id='search_entry'></form></div>";
-    echo "<table class='configtable' id='userlisttable'><tr><th>Username</th><th>Email</th><th>Enabled</th><th>Token</th><th>Password</th><th>Radius</th></tr>";
+    echo "<table class='configtable' id='userlisttable'><tr id='headerrow'><th>Username</th><th>Email</th><th>Enabled</th><th>Token</th><th>Password</th><th>Radius</th></tr>";
     $users = db_getUsers();
     foreach($users as $val) {
 
@@ -285,18 +285,27 @@ function users_doUsersBody()
       }
 
       $radius = "no";
-      if($val["Radius"] == 0) $radius = "no";
-      else $radius = "Enabled";
+      if($val["Radius"] == 0) {
+        $radius = "no";
+        $radius_en = "<img src='images/cross_simpl.png' width='16px' height='16px'>";
+      } else {
+        $radius = "Enabled";
+        $radius_en = "<img src='images/tick_simpl.png' width='16px' height='16px'>";
+      }
 
       $pass = "none";
+      $pass_en = "<img src='images/cross_simpl.png' width='16px' height='16px'>";
       if($val["Password"] != "") {
         $pass = "Enabled and Set";
+        $pass_en = "<img src='images/tick_simpl.png' width='16px' height='16px'>";
       }
 
       if($val["Enabled"] == 1) {
+        $enab_en = "<img src='images/tick_simpl.png' width='16px' height='16px'>";
         $enab = "Yes";
       } else {
         $enab = "Disabled";
+        $enab_en = "<img src='images/cross_simpl.png' width='16px' height='16px'>";
       }
 
       $del = "<a href='index.php?action=deleteuser&deleteuser=$uname' onclick='return confirmDeleteUser(\"$uname\")' id='delete_$uname'>Delete</a>";
@@ -304,10 +313,10 @@ function users_doUsersBody()
       echo "<tr id='row_$uname' onmouseover='change_line_class_in(\"row_$uname\");'";
       echo "onmouseout='change_line_class_out(\"row_$uname\");'>";
       echo "<td>$uname</td><td onmouseover='bring_up_edit(\"email\", \"$uname\", \"$em\");' onmouseout='drop_edit();' onclick='edit_clicked();'>$em</td>";
-      echo "<td onmouseover='bring_up_edit(\"enabled\", \"$uname\", \"$enab\");' onmouseout='drop_edit();' onclick='edit_clicked();'>$enab</td>";
+      echo "<td onmouseover='bring_up_edit(\"enabled\", \"$uname\", \"$enab\");' onmouseout='drop_edit();' onclick='edit_clicked();'>$enab_en</td>";
       echo "<td onmouseover='bring_up_edit(\"token\", \"$uname\", \"\");' onmouseout='drop_edit();' onclick='edit_clicked();'>$token</td>";
-      echo "<td onmouseover='bring_up_edit(\"password\", \"$uname\", \"\");' onmouseout='drop_edit();' onclick='edit_clicked();'>$pass</td>";
-      echo "<td onmouseover='bring_up_edit(\"radius\", \"$uname\", \"$radius\");' onmouseout='drop_edit();' onclick='edit_clicked();'>$radius</td><td class='control_tr'>$del</td>";
+      echo "<td onmouseover='bring_up_edit(\"password\", \"$uname\", \"\");' onmouseout='drop_edit();' onclick='edit_clicked();'>$pass_en</td>";
+      echo "<td onmouseover='bring_up_edit(\"radius\", \"$uname\", \"$radius\");' onmouseout='drop_edit();' onclick='edit_clicked();'>$radius_en</td><td class='control_tr'>$del</td>";
       echo "</tr>";
     }
     echo "</table>";
@@ -322,9 +331,12 @@ console.log("rows:");
 console.log($rows);
 $('#search_entry').keyup(function() {
   var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
-  console.log("keyup event");
+
   $rows.show().filter(function() {
       var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
+
+      // this next line stops it deleting the header row
+      if($(this)[0].id == "headerrow") return false;
       return !~text.indexOf(val);
   }).hide();
 });
