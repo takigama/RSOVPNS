@@ -164,6 +164,30 @@ function db_createDB()
 
 }
 
+function db_changeRadiusForUser($user, $radius)
+{
+  global $ourdb, $MESSAGE, $MESSAGE_TYPE;
+
+  if(!isset($prepares["updateradius"])) {
+    $prepares["updateradius"] = $ourdb->prepare("update users set Radius=:radius where Username=:user");
+  }
+  $prepares["updateradius"]->bindValue(':radius', $radius, SQLITE3_TEXT);
+  $prepares["updateradius"]->bindValue(':user', $user, SQLITE3_TEXT);
+  $prepares["updateradius"]->execute();
+}
+
+function db_changeEnablesForUser($user, $enabled)
+{
+  global $ourdb, $MESSAGE, $MESSAGE_TYPE;
+
+  if(!isset($prepares["updateenabled"])) {
+    $prepares["updateenabled"] = $ourdb->prepare("update users set Enabled=:enabled where Username=:user");
+  }
+  $prepares["updateenabled"]->bindValue(':enabled', $enabled, SQLITE3_TEXT);
+  $prepares["updateenabled"]->bindValue(':user', $user, SQLITE3_TEXT);
+  $prepares["updateenabled"]->execute();
+}
+
 function db_putTokenData($user, $tokendata)
 {
   global $ourdb, $MESSAGE, $MESSAGE_TYPE;

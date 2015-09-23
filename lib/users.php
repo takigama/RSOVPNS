@@ -23,8 +23,60 @@ function users_localHeadCheck() {
         users_reinitToken();
         exit(0);
       break;
+      case "edituservals":
+        users_editUserVals();
+        exit(0);
+      break;
     }
   }
+}
+
+function users_editUserVals()
+{
+  error_log("input incoming");
+  error_log(print_r($_REQUEST,true));
+  $user = $_REQUEST["user"];
+
+  switch($_REQUEST["type"]) {
+    case "enabled":
+      $enab = $_REQUEST["user_enabled"];
+      if($enab == "on") {
+        db_changeEnablesForUser($user, 1);
+      } else {
+        db_changeEnablesForUser($user, 0);
+      }
+    break;
+    case "email":
+      $email = $_REQUEST["email"];
+
+    break;
+    case "password":
+      $pass1 = $_REQUEST["pass1"];
+      $pass2 = $_REQUEST["pass2"];
+    break;
+    case "token":
+      $newtoken = $_REQUEST["tokentype"];
+    break;
+    case "radius":
+      $radius = $_REQUEST["radius_enabled"];
+      if($radius == "on") {
+        error_log("turning on radius for $user ($radius)");
+        db_changeRadiusForUser($user, 1);
+      } else {
+        error_log("turning off radius for $user ($radius)");
+        db_changeRadiusForUser($user, 0);
+      }
+    break;
+  }
+
+
+  if(true) {
+    $json = '{ "result": "success", "reason": "User Updated" }';
+  } else {
+    $json = '{ "result": "failure", "reason": "User update failed" }';
+  }
+  echo $json;
+
 }
 
 function users_reinitToken()
@@ -200,11 +252,18 @@ function users_doUsersBody()
 
       $del = "<a href='index.php?action=deleteuser&deleteuser=$uname' onclick='return confirmDeleteUser(\"$uname\")' id='delete_$uname'>Delete</a>";
 
-      echo "<tr id='row_$uname'><td>$uname</td><td>$em</td><td>$enab</td><td>$token</td><td>$pass</td><td>$radius</td><td class='control_tr'>$del</td></tr>";
+      echo "<tr id='row_$uname' onmouseover='change_line_class_in(\"row_$uname\");'";
+      echo "onmouseout='change_line_class_out(\"row_$uname\");'>";
+      echo "<td>$uname</td><td onmouseover='bring_up_edit(\"email\", \"$uname\", \"$em\");' onmouseout='drop_edit();' onclick='edit_clicked();'>$em</td>";
+      echo "<td onmouseover='bring_up_edit(\"enabled\", \"$uname\", \"$enab\");' onmouseout='drop_edit();' onclick='edit_clicked();'>$enab</td>";
+      echo "<td onmouseover='bring_up_edit(\"token\", \"$uname\", \"\");' onmouseout='drop_edit();' onclick='edit_clicked();'>$token</td>";
+      echo "<td onmouseover='bring_up_edit(\"password\", \"$uname\", \"\");' onmouseout='drop_edit();' onclick='edit_clicked();'>$pass</td>";
+      echo "<td onmouseover='bring_up_edit(\"radius\", \"$uname\", \"$radius\");' onmouseout='drop_edit();' onclick='edit_clicked();'>$radius</td><td class='control_tr'>$del</td>";
+      echo "</tr>";
     }
     echo "</table>";
   echo "</div>";
-
+  echo "<div class='usereditbox' id='usereditboxid'></div>";
 
 
 

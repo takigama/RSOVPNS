@@ -39,6 +39,117 @@ function submit_test_token_check()
   })
 }
 
+function bring_up_edit(edittype, user, currentval)
+{
+  if(!$("#usereditboxid").hasClass("show")) {
+    console.log("would bring up "+edittype+" for "+user);
+
+    var e = window.event;
+
+    var posX = e.clientX;
+    var posY = e.clientY;
+    //console.log("x: "+posX+" y: "+posY);
+    // fill in the stuff for this thingy...
+    var insides = "<form id='edituserformpopup'><input type='hidden' name='action' value='edituservals'>";
+    insides += "<input type='hidden' name='type' value='"+edittype+"'><input type='hidden' name='user' value='"+user+"'>";
+
+    switch(edittype) {
+      case 'email':
+        insides += "EMail Address: <input type='text' name='email' value='"+currentval+"'>";
+        document.getElementById("usereditboxid").style.width = "340px";
+        document.getElementById("usereditboxid").style.height = "18px";
+      break;
+      case 'password':
+        document.getElementById("usereditboxid").style.width = "340px";
+        document.getElementById("usereditboxid").style.height = "88px";
+        insides += "<table><tr><td>Password</td><td><input type='text' name='pass1' value=''></td></tr>";
+        insides += "<tr><td>Confirm</td><td><input type='text' name='pass2' value=''></td></tr>";
+        insides += "<tr><td>Clear Password</td><td><input type='checkbox' name='clear'></td></tr></table>";
+      break;
+      case 'enabled':
+        var checked = "";
+        if(currentval == 'Yes') {
+          checked = " checked";
+        }
+        document.getElementById("usereditboxid").style.height = "18px";
+        document.getElementById("usereditboxid").style.width = "130px";
+        insides += "Enabled: <input type='hidden' name='user_enabled' value='off'><input type='checkbox' name='user_enabled'"+checked+">";
+      break;
+      case 'token':
+        document.getElementById("usereditboxid").style.height = "18px";
+        document.getElementById("usereditboxid").style.width = "240px";
+        insides += "Token Type: <select name='tokentype'><option value='totp'>TOTP</option><option value='hotp'>HOTP</option><option value='none'>none</option></select>";
+      break;
+      case 'radius':
+        var checked = "";
+        if(currentval == "Enabled") {
+          checked = " checked";
+        }
+        document.getElementById("usereditboxid").style.height = "18px";
+        document.getElementById("usereditboxid").style.width = "130px";
+        insides += "Radius Auth: <input type='hidden' name='radius_enabled' value='off'><input type='checkbox' name='radius_enabled'"+checked+">";
+      break;
+
+    }
+    insides += "<div class='tickforedits'><img src='images/tick.png' width='22px' height='22px' onclick='send_update_user_values()'></div></form>";
+
+    document.getElementById("usereditboxid").innerHTML = insides;
+
+    //$("#usereditboxid").innerHTML = insides;
+
+
+    document.getElementById("usereditboxid").style.top = posY-60;
+    document.getElementById("usereditboxid").style.left = posX+30
+    document.getElementById("usereditboxid").style.display = "block";
+  }
+}
+
+function send_update_user_values()
+{
+  $.ajax({
+    url: "index.php?action=edituservals",
+    type: "POST",
+    data: $("#edituserformpopup").serialize(),
+    success: function (data) {
+      console.log(data);
+      result = JSON.parse(data);
+      if(result.result == "failure") {
+        $("#usereditboxid").toggleClass("show");
+        $("#usereditboxid").hide();
+        alert("Failed: " + result.reason);
+      }
+      if(result.result == "success") {
+        $("#usereditboxid").toggleClass("show");
+        $("#usereditboxid").hide();
+        alert("User Updated");
+        console.log("no do reload...");
+        location.reload(true);
+      }
+    },
+    error: function (jXHR, textStatus, errorThrown) {
+        alert(errorThrown);
+    }
+  })
+}
+
+function edit_clicked(id)
+{
+  console.log("\"click\"");
+  //document.getElementById("usereditboxid").style += " show";
+  $("#usereditboxid").toggleClass("show");
+}
+
+
+function drop_edit()
+{
+  var did = document.getElementById("usereditboxid");
+  console.log("checking for show...");
+  if(!$("#usereditboxid").hasClass("show")) {
+    console.log("i have no class");
+    did.style.display = "none";
+  }
+}
+
 
 function submit_create_user_form_clicked()
 {
@@ -148,6 +259,24 @@ function send_do_backup()
 }
 
 
+function change_line_class_in(id)
+{
+  // couldnt make this work sas a class change, im not sure why really
+  document.getElementById(id).style.backgroundColor="#DDDDFF";
+  //document.getElementById(id).className="confighovertable";
+  console.log(document.getElementById(id));
+}
+
+function change_line_class_out(id)
+{
+  var did = document.getElementById(id);
+
+
+    did.style.backgroundColor="#EEEEEE";
+  //document.getElementById(id).className="configtable";
+}
+
+
 function send_do_restore_inplace()
 {
   var definite = window.confirm("READ CAREFULLY! You are about to delete all configuration and replace it with what is in the current backup, are you sure?");
@@ -222,6 +351,10 @@ function confirmDeleteUser(username) {
     })
   }
   return false;
+}
+
+function has_class(element, cls) {
+    return (' ' + element.className + ' ').indexOf(' ' + cls + ' ') > -1;
 }
 
 
