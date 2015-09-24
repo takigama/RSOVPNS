@@ -148,12 +148,17 @@ function conf_doConfigurationBody()
   echo "<tr><td colspan='3'><input type='submit' name='Save' value='Save' onclick='validateConfigForm()' id='main_configuration_form'></td></tr>";
   echo "</table>";
   echo "</form>";
-  echo "<hr>";
+  echo "<hr>\n\n\n\n\n\n";
   echo "<div class='mybodysubheading'>SSL Certificate</div>";
   echo "Expiration of current cert is: $certleft<br>";
   echo "<form method='post' action='?action=createcert'>";
   echo "<table class='configtable'>";
-  echo "<tr><td>Country</td><td><input type='text' name='cert_country' value='".web_encode(db_getConfig('cert.country', 'AU'))."'></td><td class='help_tr'>Two letter country code (e.g. US, AU, CN, etc)</td></tr>";
+  echo "<tr><td>Country</td>";
+  echo "<td><select name='cert_country'>\n";
+  count_getCountryListAsSelect(db_getConfig('cert.country', 'AU'));
+  echo "</select></td>\n";
+  // <input type='text' name='cert_country' value='".web_encode(db_getConfig('cert.country', 'AU'))."'></td>
+  echo "<td class='help_tr'>Two letter country code (e.g. US, AU, CN, etc)</td></tr>\n";
   // px5g selfsigned -days 2048 -newkey rsa:2048 -keyout f.key -out f.pem -subj "/C=GB/ST=London/L=London/O=Global Security/OU=IT Department/CN=example.com"
   echo "<tr><td>State/Region</td><td><input type='text' name='cert_state' value='".web_encode(db_getConfig('cert.state', 'NSW'))."''></td><td class='help_tr'>State or region of the certificate, (eg NSW, Washington, etc)</td></tr>";
   echo "<tr><td>Locality</td><td><input type='text' name='cert_locality' value='".web_encode(db_getConfig('cert.locality', 'Sydney'))."''></td><td class='help_tr'>City or town (e.g. Sydney, New York, Tokyo)</td></tr>";
