@@ -139,6 +139,10 @@ function db_createDB()
 {
   global $ourdb, $MESSAGE, $MESSAGE_TYPE;
 
+
+  $_SESSION["messages"]["db"]["type"] = 1;
+  $_SESSION["messages"]["db"]["text"] = "Database created successfully";
+
   // create the config table
   $ourdb->exec("CREATE TABLE `config` (
   	`CID`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
@@ -159,8 +163,8 @@ function db_createDB()
   	`Radius`	INTEGER NOT NULL
   )");
 
-  $MESSAGE_TYPE=1;
-  $MESSAGE = "Created database";
+//  $MESSAGE_TYPE=1;
+//  $MESSAGE = "Created database";
 
 }
 
