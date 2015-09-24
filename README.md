@@ -44,17 +44,18 @@ portable, and so i've made it in php where it can be easily ported to run on lin
 
 ## TODO:
 1. form validation
-2. radius code
-3. email code
-4. code to backup data on schedule
-5. implement logins
-6. so much error checking... so much...
+2. code to backup data on schedule
+3. implement logins
+4. so much error checking... so much...
 
 ## DONE:
 1. Fixed database code so that SQL injection shouldn't be possible
 2. backups code working
 3. management address limitations now work
 4. cleanup code for pickup ids and token pickups in various cases (token re-init, delete user, etc)
+5. radius code
+6. email code
+7. user editing
 
 ## Not in the plan:
 1. certificate auth - There are many reasons for this, but ultimately i wanted something simple

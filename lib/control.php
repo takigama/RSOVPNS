@@ -248,7 +248,13 @@ function ctrl_writeConfigFile()
   $config .= "comp-lzo yes\n";
   $config .= "keepalive 5 60\nport ".db_getConfig("openvpn.port", "1194")."\n";
   $config .= "proto ".db_getConfig("openvpn.proto", "udp")."\nscript-security 2\nserver ".db_getConfig('openvpn.clientnetwork')."\n";
-  $config .= "verb 3\npush \"route ".trim(preg_replace('/\s\s+/', ' ', db_getConfig("openvpn.routes")))."\"\n";
+  $config .= "verb 3\n";
+  $routelist = preg_split('/\s\s+/', db_getConfig("openvpn.routes"));
+  foreach($routelist as $route) {
+    if($route != "") {
+      $config .= "push \"route $route\"\n";
+    }
+  }
   $config .= "push \"dhcp-option DNS ".db_getConfig("openvpn.dns1")."\"\npush \"dhcp-option DNS ".db_getConfig("openvpn.dns2")."\"\n";
   $config .= "auth-user-pass-verify $HOMEDIR/bin/auth.sh via-file\n";
 

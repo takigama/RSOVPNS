@@ -173,7 +173,7 @@ function conf_doConfigurationBody()
   echo "Creation date of current key: $dhkeyage<br>";
   echo "Click <a href='?action=createdhkey'>here</a> to begin the process of creating a new key - Note: this can take HOURS!!<br>";
 
-
+  //print_r(preg_split('/\s\s+/', db_getConfig("openvpn.routes")));
 }
 
 
