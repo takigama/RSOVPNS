@@ -64,3 +64,4 @@ portable, and so i've made it in php where it can be easily ported to run on lin
 2. OpenWRT coders http://openwrt.org
 3. phpqrencode project http://phpqrcode.sourceforge.net/
 4. Myself for GA4PHP https://github.com/takigama/ga4php (which i have not updated in a while)
+5. PHPMailer for PHPMailer https://github.com/PHPMailer/PHPMailer
