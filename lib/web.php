@@ -78,8 +78,10 @@ function web_doLoginHeadCheck()
 
 function web_checkMgmtIP()
 {
-  $ips = explode(" ", trim(preg_replace('/\s\s+/', ' ', db_getConfig("admin.allowednetworks"))));
+  $ips = explode(" ", trim(preg_replace('/\s\s+/', ' ', db_getConfig("admin.allowednetworks", "10.*\r\n192.168.*\r\n127.*\r\n::1\r\n"))));
   $from_addr = $_SERVER["REMOTE_ADDR"];
+
+  //print_r($ips);
 
   foreach($ips as $val) {
     //$valnew = str_replace(":", '\\:', $val);
