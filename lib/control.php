@@ -39,8 +39,43 @@ function ctrl_localHeadCheck()
         ctrl_restoreFromInPlace();
         exit(0);
       break;
+      case "sendtestemail";
+        ctrl_sendtestemail();
+        exit(0);
+      break;
     }
   }
+}
+
+function ctrl_sendtestemail()
+{
+  $mail = new PHPMailer;
+
+  $mail->isSMTP();
+  $mail->Host = db_getConfig("smtp.server");
+  $mail->Port = db_getConfig("smtp.port");
+  $mail->setFrom = db_getConfig("smtp.fromemail");
+  $mail->addAddress($_REQUEST["testemailto"]);
+  $mail->Subject = "This is a test email from your Simple VPN software";
+  $mail->Body = "Hi,\nThis is your simple vpn software sending you a test email because you\nhave asked it to (hopefully)\n";
+  $mail->SMTPAuth = false;
+
+  $smtp_user = db_getConfig("smtp.username");
+  $smtp_pass = db_getConfig("smtp.password");
+  if($smtp_user !="") {
+    $mail->SMTPAuth = true;
+    $mail->Username = $smtp_user;
+    $mail->Password = $smtp_pass;
+  }
+
+  $json = "";
+  if(!$mail->send()) {
+    $json = '{ "result": "failure", "reason": "'.$mail->ErrorInfo.'"}';
+  } else {
+    $json = '{ "result": "success", "reason": "E-Mail Sent Successfully" }';
+  }
+  echo $json;
+  return;
 }
 
 function ctrl_downloadBackup()
@@ -110,6 +145,8 @@ function ctrl_statusPageBody()
   echo "<table class='configtable'>";
   echo "<tr><th>Server Status</th><td>$server_status</td><td class='control_tr'>$control_options</td></tr>";
   echo "<tr><th>Number of Users</th><td>$n_users</td></tr>";
+  echo "<form id='testemailform'><tr><th>Send Test Email</th><td><input type='text' name='testemailto'></td>";
+  echo "<td><input type='submit' name='Send Test Email' value='Send Test Email' id='send_test_email'><div id='send_test_email_scroller'></div></td></tr></form>";
   echo "</table>";
 
   if(file_exists("../data/backup.bk")) {

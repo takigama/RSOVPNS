@@ -290,6 +290,11 @@ input[type="password"].logintext {
   box-shadow: 0px 0px 5px 0px rgba(164, 164, 164, 1);
 }
 
+#send_test_email_scroller {
+  height: 2px;
+  width: 0px;
+}
+
 table.confighovertable tr, table.confighovertable td, table.confighovertable tbody {
   background-color: #FFFFAA;
   border-color: #FF0000;

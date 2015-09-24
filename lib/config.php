@@ -131,6 +131,20 @@ function conf_doConfigurationBody()
   else $force_ssl = "";
   echo "<tr><td>Force SSL</td><td><input type='hidden' name='admin.forcessl' value='off'><input type='checkbox' name='admin.forcessl' $force_ssl></td><td class='help_tr'>Force used (via redirect) to come into the page via SSL</td></tr>";
 
+  echo "<tr><td>SMTP Server</td><td><input type='text' name='smtp.server' value='".web_encode(db_getConfig('smtp.server', 'none'))."'></td><td class='help_tr'>SMTP Server for sending emails</td></tr>";
+  echo "<tr><td>SMTP From E-Mail</td><td><input type='text' name='smtp.fromemail' value='".web_encode(db_getConfig('smtp.fromemail', 'noreply@local.net'))."'></td><td class='help_tr'>SMTP from address for sending emails</td></tr>";
+  echo "<tr><td>SMTP Port</td><td><input type='text' name='smtp.port' value='".web_encode(db_getConfig('smtp.port', '25'))."'></td><td class='help_tr'>SMTP port (typically 25 or 587)</td></tr>";
+  $smtp_pass = web_encode(db_getConfig('smtp.password', ''));
+  if($smtp_pass == "") {
+    $smpass = "";
+  } else {
+    $smpass = "*****";
+  }
+  echo "<tr><td>SMTP Username</td><td><input type='text' name='smtp.username' value='".web_encode(db_getConfig('smtp.username', ''))."'></td><td class='help_tr'>SMTP username (if required)</td></tr>";
+  echo "<tr><td>SMTP Password</td><td><input type='password' name='smtp.password' value='".$smpass."'></td><td class='help_tr'>SMTP password (if required)</td></tr>";
+
+
+
   echo "<tr><td colspan='3'><input type='submit' name='Save' value='Save' onclick='validateConfigForm()' id='main_configuration_form'></td></tr>";
   echo "</table>";
   echo "</form>";

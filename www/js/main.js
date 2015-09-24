@@ -15,7 +15,46 @@ $( document ).ready(function() {
     submit_test_token_check();
   })
 
+  $("#send_test_email").click(function(e) {
+    e.preventDefault();
+    send_test_email();
+  })
+
+
 })
+
+function send_test_email()
+{
+
+  document.getElementById("send_test_email_scroller").style.width = 100;
+  document.getElementById("send_test_email_scroller").style.background = "#00FF00";
+  var animate = $("#send_test_email_scroller").animate({ width: '-='+100}, 22000, function() {
+    document.getElementById("send_test_email_scroller").style.width = 0;
+  });
+
+  $.ajax({
+    url: "index.php?action=sendtestemail",
+    type: "POST",
+    data: $("#testemailform").serialize(),
+    success: function (data) {
+      console.log(data);
+      result = JSON.parse(data);
+      if(result.result == "failure") {
+        alert("Failed: " + result.reason);
+        animate.stop();
+        document.getElementById("send_test_email_scroller").style.width = 0;
+      }
+      if(result.result == "success") {
+        alert("E-Mail was sent successully!");
+        animate.stop();
+        document.getElementById("send_test_email_scroller").style.width = 0;
+      }
+    },
+    error: function (jXHR, textStatus, errorThrown) {
+        alert(errorThrown);
+    }
+  })
+}
 
 function submit_test_token_check()
 {
