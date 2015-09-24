@@ -1,5 +1,5 @@
 $( document ).ready(function() {
-  console.log("ferk");
+  //console.log("ferk");
   $('#main_configuration_form').click(function(e) {
     e.preventDefault();
     submit_main_config_form();
@@ -37,7 +37,7 @@ function send_test_email()
     type: "POST",
     data: $("#testemailform").serialize(),
     success: function (data) {
-      console.log(data);
+      //console.log(data);
       result = JSON.parse(data);
       if(result.result == "failure") {
         alert("Failed: " + result.reason);
@@ -63,7 +63,7 @@ function submit_test_token_check()
     type: "POST",
     data: $("#tokentestform").serialize(),
     success: function (data) {
-      console.log(data);
+      //console.log(data);
       result = JSON.parse(data);
       if(result.result == "failure") {
         alert("Failed: " + result.reason);
@@ -81,7 +81,7 @@ function submit_test_token_check()
 function bring_up_edit(edittype, user, currentval)
 {
   if(!$("#usereditboxid").hasClass("show")) {
-    console.log("would bring up "+edittype+" for "+user);
+    //console.log("would bring up "+edittype+" for "+user);
 
     var e = window.event;
 
@@ -150,7 +150,7 @@ function send_update_user_values()
     type: "POST",
     data: $("#edituserformpopup").serialize(),
     success: function (data) {
-      console.log(data);
+      //console.log(data);
       result = JSON.parse(data);
       if(result.result == "failure") {
         $("#usereditboxid").toggleClass("show");
@@ -173,7 +173,7 @@ function send_update_user_values()
 
 function edit_clicked(id)
 {
-  console.log("\"click\"");
+  //console.log("\"click\"");
   //document.getElementById("usereditboxid").style += " show";
   $("#usereditboxid").toggleClass("show");
 }
@@ -182,9 +182,9 @@ function edit_clicked(id)
 function drop_edit()
 {
   var did = document.getElementById("usereditboxid");
-  console.log("checking for show...");
+  //console.log("checking for show...");
   if(!$("#usereditboxid").hasClass("show")) {
-    console.log("i have no class");
+    //console.log("i have no class");
     did.style.display = "none";
   }
 }
@@ -303,7 +303,7 @@ function change_line_class_in(id)
   // couldnt make this work sas a class change, im not sure why really
   document.getElementById(id).style.backgroundColor="#DDDDFF";
   //document.getElementById(id).className="confighovertable";
-  console.log(document.getElementById(id));
+  //console.log(document.getElementById(id));
 }
 
 function change_line_class_out(id)
@@ -350,7 +350,7 @@ function submit_main_config_form()
     type: "POST",
     data: $("#configform").serialize(),
     success: function (data) {
-      console.log(data);
+      //2console.log(data);
       result = JSON.parse(data);
       if(result.result == "failure") {
         alert("Failed: " + result.reason);

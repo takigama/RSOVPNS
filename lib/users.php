@@ -327,8 +327,8 @@ function users_doUsersBody()
   echo "<script type='text/javascript'>";
 ?>
 var $rows = $('#userlisttable tr');
-console.log("rows:");
-console.log($rows);
+//console.log("rows:");
+//console.log($rows);
 $('#search_entry').keyup(function() {
   var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
 

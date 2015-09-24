@@ -153,10 +153,10 @@ function conf_doConfigurationBody()
   echo "Expiration of current cert is: $certleft<br>";
   echo "<form method='post' action='?action=createcert'>";
   echo "<table class='configtable'>";
-  echo "<tr><td>Country</td><td><input type='text' name='cert_country' value='".web_encode(db_getConfig('cert.country', 'GB'))."'></td><td class='help_tr'>Two letter country code (e.g. US, AU, CN, etc)</td></tr>";
+  echo "<tr><td>Country</td><td><input type='text' name='cert_country' value='".web_encode(db_getConfig('cert.country', 'AU'))."'></td><td class='help_tr'>Two letter country code (e.g. US, AU, CN, etc)</td></tr>";
   // px5g selfsigned -days 2048 -newkey rsa:2048 -keyout f.key -out f.pem -subj "/C=GB/ST=London/L=London/O=Global Security/OU=IT Department/CN=example.com"
-  echo "<tr><td>State/Region</td><td><input type='text' name='cert_state' value='".web_encode(db_getConfig('cert.state', 'London'))."''></td><td class='help_tr'>State or region of the certificate, (eg NSW, Washington, etc)</td></tr>";
-  echo "<tr><td>Locality</td><td><input type='text' name='cert_locality' value='".web_encode(db_getConfig('cert.locality', 'London'))."''></td><td class='help_tr'>City or town (e.g. Sydney, New York, Tokyo)</td></tr>";
+  echo "<tr><td>State/Region</td><td><input type='text' name='cert_state' value='".web_encode(db_getConfig('cert.state', 'NSW'))."''></td><td class='help_tr'>State or region of the certificate, (eg NSW, Washington, etc)</td></tr>";
+  echo "<tr><td>Locality</td><td><input type='text' name='cert_locality' value='".web_encode(db_getConfig('cert.locality', 'Sydney'))."''></td><td class='help_tr'>City or town (e.g. Sydney, New York, Tokyo)</td></tr>";
   echo "<tr><td>Organisation</td><td><input type='text' name='cert_org' value='".web_encode(db_getConfig('cert.organisation', 'Internet Stuff Org'))."''></td><td class='help_tr'>Name of the organisation who owns the certificate</td></tr>";
   echo "<tr><td>Department</td><td><input type='text' name='cert_dept' value='".web_encode(db_getConfig('cert.department', 'IT Admin'))."''></td><td class='help_tr'>Department who owns the certificate (e.g. Admin)</td></tr>";
   echo "<tr><td>Common Name</td><td><input type='text' name='cert_cn' value='".web_encode(db_getConfig('cert.commonname', 'net.internal'))."''></td><td class='help_tr'>Common Name - URL of the cert (e.g. www.mydomain.com)</td></tr>";
