@@ -7,5 +7,7 @@ then
 fi
 
 chmod a+x bin/*
+rm -f README.md
 rm -rf assets
 rm -rf upstream-source
+rm -rf scripts
