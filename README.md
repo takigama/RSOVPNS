@@ -26,8 +26,8 @@ Then on the web gui...
 - there is no login at the moment, just click the login button
 - edit the configuration
 - create a user (password isnt mandatory)
-- if you gave it a token, pick it up on your device
-- donwload the client config
+- if you gave it a token, pick it up on your device (you'll see this in the user creation page)
+- when you pickup the token, you would pickup the client configuration at the same time
 - start the openvpn server (from the status menu item)
 - client config should automatically import into the openvpn client (if it knows how)
 - connect!
