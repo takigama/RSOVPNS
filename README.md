@@ -13,6 +13,10 @@ routers health.
 
 My test beds are an AR9331 (GL.inet) router and a TPLink TL-WDR4300
 
+At this point, you will want a reasonable amount of disk space to install it as there is things in the git repo that arent really needed by openwrt. There are some scripts under the
+scripts directory that will reduce the size of the php code and remove uneeded stuff. If your using a pivot root or overlay FS you probably dont care that much, if you using the root
+flash space thats on the router, you probably do. In which case, download it to a seperate machine, run the scripts under the scripts directory and copy it up to the router manually
+
 If you really want to play, heres a rough outline of how you make it work on openwrt:
 - you need basically all the php packages for openwrt (but dont add php5-pecl-apc, it causes a crash with any code, not just mine)
 - add 'list interpreter ".php=/usr/bin/php-cgi"' to the "main" in /etc/config/uhttpd
