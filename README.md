@@ -11,16 +11,17 @@ What it has is:
 Its NOT PRODUCTION WORTHY by any stretch - in fact, running it would be very detrimental to your
 routers health.
 
-My test beds are an AR9331 (GL.inet) router and a TPLink TL-WDR4300
+My test beds are an AR9331 (GL.inet) router and a TPLink TL-WDR4300 - however, they all use a pivot overlay root on an external flash. The repo size is about 4M, which is the size
+of the flash on most routers (i.e. you want to cleanup before you copy the code up to the router)
 
 At this point, you will want a reasonable amount of disk space to install it as there is things in the git repo that arent really needed by openwrt. There are some scripts under the
 scripts directory that will reduce the size of the php code and remove uneeded stuff. If your using a pivot root or overlay FS you probably dont care that much, if you using the root
-flash space thats on the router, you probably do. In which case, download it to a seperate machine, run the scripts under the scripts directory and copy it up to the router manually
+flash space thats on the router, you probably do. In which case, download it to a seperate machine, run the scripts under the scripts directory and copy it up to the router manually.
 
-If you really want to play, heres a rough outline of how you make it work on openwrt:
-- you need basically all the php packages for openwrt (but dont add php5-pecl-apc, it causes a crash with any code, not just mine)
+If you really want to play (and at this point it would be good if people did start looking to give me feedback), heres a rough outline of how you make it work on openwrt:
+- opkg update; opkg install openssl openvpn-openssl php5 php5-cgi php5-cli php5-mod-hash php5-mod-mcrypt php5-mod-sqlite3 px5g libopenssl php5-mod-session zoneinfo-core php5-mod-gd openssl-util
 - add 'list interpreter ".php=/usr/bin/php-cgi"' to the "main" in /etc/config/uhttpd
-- mkdir /vpn; cd /vpn; git clone https://github.com/takigama/RSOVPNS.git; ln -s /vpn/www/ /www/vpn
+- mkdir /vpn; cd /vpn; git clone https://github.com/takigama/RSOVPNS.git; mv RSOVPNS/* .; ln -s /vpn/www/ /www/vpn
 - reboot or restart uhttpd
 - browse to http://ip_of_thing_you_installed_it_on/vpn/
 - advisable to create the servers dh key on another box as on the router will take HOURS (goes in /vpn/data/server.dh) with the command "openssl gendh 2048 > server.dh"
@@ -29,7 +30,7 @@ If you really want to play, heres a rough outline of how you make it work on ope
 Then on the web gui...
 - there is no login at the moment, just click the login button
 - edit the configuration
-- create a user (password isnt mandatory)
+- create a user (only one form of auth is mandatory and a username, everything else is optional)
 - if you gave it a token, pick it up on your device (you'll see this in the user creation page)
 - when you pickup the token, you would pickup the client configuration at the same time
 - start the openvpn server (from the status menu item)
