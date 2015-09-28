@@ -333,7 +333,7 @@ function users_doUsersBody()
 
   echo "<div id='createuserframe'>";
 
-    echo "<div id='createusertitle' class='mybodysubheading'>Create New</div>";
+    echo "<div id='createusertitle' class='mybodysubheading'>Create New <a href='#' onmouseover='show_help(\"new_user.html\")' onmouseout='hide_help()'>?</a></div>";
 
     echo "<div id='createusertable'>";
       echo "<form method='post' id='createuserform'>";

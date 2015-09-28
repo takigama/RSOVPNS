@@ -80,6 +80,9 @@ function submit_test_token_check()
 
 function show_help(page)
 {
+
+  document.getElementById("userhelpboxid").innerHTML = "<div class='mybodyheading'>Loading....</div>";
+
   var e = window.event;
 
   var posX = e.clientX;
