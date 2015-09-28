@@ -88,7 +88,8 @@ input[type="password"].logintext {
   display:block;
   overflow:hidden;
   width:auto;
-  height: 200%;
+  /*height: 200%;*/
+  min-height: 200%;
   background-color: #EEEEEE;
   padding-left: 10px;
   padding-top: 10px;

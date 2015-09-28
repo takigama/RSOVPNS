@@ -349,7 +349,7 @@ function users_doUsersBody()
       echo "</table>";
       echo "</form>";
     echo "</div>";
-  echo "<hr><div class='mybodysubheading'>Batch Create Users <a href='#' onmouseover='show_upload_help_div()' onmouseout='hide_upload_help_div()'>?</a></div>";
+  echo "<hr><div class='mybodysubheading'>Batch Create Users <a href='#' onmouseover='show_help(\"create_batch_users.html\")' onmouseout='hide_help()'>?</a></div>";
   echo "<form class='configtable' method='post' action='?action=batchuserupload' enctype='multipart/form-data'><table class='configtable'><th>Upload File</th><td><input type='file' name='csv_file' id='csv_file'></td><td><input type='submit' name='upload'></td></tr></table></form>";
 
   echo "</div><hr>";
@@ -420,16 +420,6 @@ function users_doUsersBody()
     echo "</table>";
   echo "</div>";
   echo "<div class='usereditbox' id='usereditboxid'></div>";
-  echo "<div class='userhelpbox' id='userhelpboxid'><div class='mybodysubheading'>Creating Batch Users</div><hr>To create batch users, a CSV file is created with the following fields (one user per line)<br>";
-  echo "<b><i>username, email_address, password, radius, token_type, enabled, send_email</i></b><br>Username and a single form of authentication is required. All over fields are optional. The values of each field are described below<br><br>";
-  echo "<li>Username: asci characters, minimum of 2 letters and maximum of 64 (mandatory)";
-  echo "<li>email_address: standard email address format (optional)";
-  echo "<li>password: user password (optional)";
-  echo "<li>radius: single character, Y, y, N, n or blank (defaults to n for no and is optional)";
-  echo "<li>token_type: 3 choices, hotp, totp or blank (Defaults to none for blank, optional)";
-  echo "<li>enabled: single character, Y, y, N, n or blank (defaults to n for no and is optional)";
-  echo "<li>send_email: single character, Y, y, N, n or blank. Only required when a user is given a token and will send an email to the user for the token pickup url if set to Y or y (defaults to n for no and is optional)";
-  echo "</div>";
 
   // doing this js here is a little ugly, but ahh well.
   echo "<script type='text/javascript'>";

@@ -267,6 +267,10 @@ function web_doHeaders()
 function web_doPageTop()
 {
   echo "<div id='myheader_outer'><div id='myheader_inner'>Real Simple OpenVPN Server</div></div>"; // Real Simple OpenVPN Service
+
+  echo "<div class='userhelpbox' id='userhelpboxid'>";
+  echo "</div>";
+
 }
 
 function web_doPageMiddle()

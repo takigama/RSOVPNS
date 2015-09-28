@@ -78,19 +78,22 @@ function submit_test_token_check()
   })
 }
 
-function show_upload_help_div()
+function show_help(page)
 {
   var e = window.event;
 
   var posX = e.clientX;
   var posY = e.clientY;
 
+  //document.getElementById("userhelpboxid").innerHTML = page;
+  $("#userhelpboxid").load("help/"+page);
+
   document.getElementById("userhelpboxid").style.top = posY-60;
   document.getElementById("userhelpboxid").style.left = posX+30
   document.getElementById("userhelpboxid").style.display = "block";
 }
 
-function hide_upload_help_div()
+function hide_help()
 {
   document.getElementById("userhelpboxid").style.display = "none";
 }
