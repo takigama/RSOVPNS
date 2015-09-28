@@ -27,6 +27,10 @@ function users_localHeadCheck() {
         users_editUserVals();
         exit(0);
       break;
+      case "batchuserupload":
+        users_batchCreateUsers();
+        exit(0);
+      break;
     }
   }
 }
@@ -164,6 +168,97 @@ function users_deleteUser()
   echo $json;
 }
 
+function users_batchCreateUsers()
+{
+  global $_FILES;
+
+  error_log("in create batch users: ".print_r($_REQUEST,true)." - ".print_r($_FILES, true));
+
+  if(isset($_FILES["csv_file"]["tmp_name"])) {
+    if((isset($_FILES["csv_file"]["error"]) && $_FILES["csv_file"]["error"] != 0) || $_FILES["csv_file"]["tmp_name"] == "") {
+      error_log("trigged error in upload");
+      $_SESSION["messages"]["upload"]["type"] = 3;
+      $error = "Unknown php error";
+      if(isset($_FILES["csv_file"]["error"])) {
+        switch($_FILES["csv_file"]["error"]) {
+          case 1:
+          case 2:
+            $error = "file too large";
+          break;
+          case 3:
+            $error = "partial file upload";
+          break;
+          case 4:
+            $error = "no file selected";
+          break;
+          case 6:
+            $error = "temporary directory problem";
+          break;
+          case 7:
+            $error  = "problem writing to disk";
+          break;
+        }
+      }
+      $_SESSION["messages"]["upload"]["text"] = "CSV File upload failed ($error)";
+    } else {
+      $_SESSION["messages"]["upload"]["type"] = 1;
+      $_SESSION["messages"]["upload"]["text"] = "CSV File uploaded";
+
+      // no process the csv file
+      $ret = users_processCSVFile($_FILES["csv_file"]["tmp_name"]);
+      if($ret != "") {
+        $_SESSION["messages"]["upload"]["type"] = 3;
+        $_SESSION["messages"]["upload"]["text"] = $ret;
+      }
+    }
+  } else {
+    error_log("trigged error in upload");
+    $_SESSION["messages"]["upload"]["type"] = 3;
+    $_SESSION["messages"]["upload"]["text"] = "CSV File upload failed";
+  }
+  header("Location: ?action=users");
+}
+
+function users_processCSVFile($file)
+{
+  if(file_exists($file)) {
+    $fh = fopen($file, "r");
+    while (($line_r = fgets($fh, 4096)) !== false) {
+      $line = trim($line_r);
+      $vals = explode(",", $line);
+      $username = $vals[0];
+      $email = $vals[1];
+      $pass1 = $vals[2];
+
+      if($vals[3] == "y" || $vals[3] == "Y") $radius = 1;
+      else $radius = 0;
+
+      if(strtolower($vals[4]) == "hotp" || strtolower($vals[4]) == "totp") $token = 1;
+      else $token = 0;
+
+      $token_type = $vals[4];
+
+      if($vals[5] == "y" || $vals[5] == "Y") $enabled = 1;
+      else $enabled = 0;
+
+      // username, email_address, password, radius, token_type, enabled, send_email
+
+      // TODO: error check on result
+      $result = db_createUser("$username", "$email", "$pass1", $radius, $token, $enabled, $token_type);
+      // error_log("result from user create is $result for user $username, $email, $pass1 ---- ".print_r($vals));
+      if($token == 1) user_createPickupData($username);
+
+      if($vals[6] == "y" || $vals[6] == "Y") {
+          // TODO: send token pickup url to user
+      }
+    }
+
+    return "";
+  } else {
+    return "file doesnt exist";
+  }
+}
+
 function users_doCreateUser()
 {
   $username = $_REQUEST["cr_username"];
@@ -236,12 +331,12 @@ function users_doUsersBody()
   echo "<div class='mybodyheading'>Users</div><hr>";
 
 
-  echo "<form method='post' id='createuserform'>";
   echo "<div id='createuserframe'>";
 
     echo "<div id='createusertitle' class='mybodysubheading'>Create New</div>";
 
     echo "<div id='createusertable'>";
+      echo "<form method='post' id='createuserform'>";
       echo "<table class='configtable'>";
       echo "<tr><th>Username</th><th>EMail</th><th>Password</th><th>Password Confirm</th><th>Radius?</th><th>Token?</th><th>Enabled?</th><th></th></tr>";
       echo "<tr>";
@@ -252,9 +347,12 @@ function users_doUsersBody()
       echo "<td><input type='submit' name='go' value='Create' id='submit_create_user_form_button'></td>";
       echo "</tr>";
       echo "</table>";
+      echo "</form>";
     echo "</div>";
+  echo "<hr><div class='mybodysubheading'>Batch Create Users <a href='#' onmouseover='show_upload_help_div()' onmouseout='hide_upload_help_div()'>?</a></div>";
+  echo "<form class='configtable' method='post' action='?action=batchuserupload' enctype='multipart/form-data'><table class='configtable'><th>Upload File</th><td><input type='file' name='csv_file' id='csv_file'></td><td><input type='submit' name='upload'></td></tr></table></form>";
 
-  echo "</div><hr></form>";
+  echo "</div><hr>";
 
 
   echo "<div id='userlistframe'>";
@@ -322,6 +420,16 @@ function users_doUsersBody()
     echo "</table>";
   echo "</div>";
   echo "<div class='usereditbox' id='usereditboxid'></div>";
+  echo "<div class='userhelpbox' id='userhelpboxid'><div class='mybodysubheading'>Creating Batch Users</div><hr>To create batch users, a CSV file is created with the following fields (one user per line)<br>";
+  echo "<b><i>username, email_address, password, radius, token_type, enabled, send_email</i></b><br>Username and a single form of authentication is required. All over fields are optional. The values of each field are described below<br><br>";
+  echo "<li>Username: asci characters, minimum of 2 letters and maximum of 64 (mandatory)";
+  echo "<li>email_address: standard email address format (optional)";
+  echo "<li>password: user password (optional)";
+  echo "<li>radius: single character, Y, y, N, n or blank (defaults to n for no and is optional)";
+  echo "<li>token_type: 3 choices, hotp, totp or blank (Defaults to none for blank, optional)";
+  echo "<li>enabled: single character, Y, y, N, n or blank (defaults to n for no and is optional)";
+  echo "<li>send_email: single character, Y, y, N, n or blank. Only required when a user is given a token and will send an email to the user for the token pickup url if set to Y or y (defaults to n for no and is optional)";
+  echo "</div>";
 
   // doing this js here is a little ugly, but ahh well.
   echo "<script type='text/javascript'>";

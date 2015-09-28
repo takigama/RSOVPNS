@@ -78,6 +78,23 @@ function submit_test_token_check()
   })
 }
 
+function show_upload_help_div()
+{
+  var e = window.event;
+
+  var posX = e.clientX;
+  var posY = e.clientY;
+
+  document.getElementById("userhelpboxid").style.top = posY-60;
+  document.getElementById("userhelpboxid").style.left = posX+30
+  document.getElementById("userhelpboxid").style.display = "block";
+}
+
+function hide_upload_help_div()
+{
+  document.getElementById("userhelpboxid").style.display = "none";
+}
+
 function bring_up_edit(edittype, user, currentval)
 {
   if(!$("#usereditboxid").hasClass("show")) {

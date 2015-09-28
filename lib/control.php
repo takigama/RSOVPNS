@@ -148,6 +148,7 @@ function ctrl_statusPageBody()
   echo "<form id='testemailform'><tr><th>Send Test Email</th><td><input type='text' name='testemailto'></td>";
   echo "<td><input type='submit' name='Send Test Email' value='Send Test Email' id='send_test_email'><div id='send_test_email_scroller'></div></td></tr></form>";
   echo "</table>";
+  echo "<div class='mybodysubheading'>Batch Create Users</div>";
 
   if(file_exists("../data/backup.bk")) {
     $backuptime = date ("F d Y H:i:s.", filemtime("../data/backup.bk"));
