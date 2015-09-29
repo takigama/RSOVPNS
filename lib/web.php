@@ -243,24 +243,21 @@ function web_doHeaders()
 {
   $dir = "../www/js/";
   if (is_dir($dir)) {
-      if ($dh = opendir($dir)) {
-          while (($file = readdir($dh)) !== false) {
-              //echo "filename: $file : filetype: " . filetype($dir . $file) . "\n";
-              if(preg_match("/.*\.js/", $file)) echo "<script type='text/javascript' src='js/$file'></script>";
-          }
-          closedir($dh);
-      }
+    $files = scandir($dir);
+    error_log("files is: ".print_r($files, true));
+    foreach($files as $file) {
+      //error_log("file is $file");
+      if(preg_match("/.*\.js/", $file)) echo "<script type='text/javascript' src='js/$file'></script>";
+    }
   }
 
   $dir = "../www/css/";
   if (is_dir($dir)) {
-      if ($dh = opendir($dir)) {
-          while (($file = readdir($dh)) !== false) {
-              //echo "filename: $file : filetype: " . filetype($dir . $file) . "\n";
-              if(preg_match("/.*\.css/", $file)) echo "<link rel='stylesheet' href='css/$file' type='text/css' />";
-          }
-          closedir($dh);
-      }
+    $files = scandir($dir);
+    foreach($files as $file) {
+      //error_log("css file is $file");
+      if(preg_match("/.*\.css/", $file)) echo "<link rel='stylesheet' href='css/$file' type='text/css' />";
+    }
   }
 }
 

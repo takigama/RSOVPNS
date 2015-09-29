@@ -356,7 +356,7 @@ function users_doUsersBody()
 
 
   echo "<div id='userlistframe'>";
-    echo "<div id='userlisthead' class='mybodysubheading'>Current Users</div>";
+    echo "<div id='userlisthead' class='mybodysubheading'>Current Users <a href='#' onmouseover='show_help(\"user_list.html\")' onmouseout='hide_help()'>?</a></div>";
     echo "<div id='searchbox'><form><input type='text' name='searchval' placeholder='Type to search' id='search_entry'></form></div>";
     echo "<table class='configtable' id='userlisttable'><tr id='headerrow'><th>Username</th><th>Email</th><th>Enabled</th><th>Token</th><th>Password</th><th>Radius</th></tr>";
     $users = db_getUsers();

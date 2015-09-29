@@ -19,9 +19,9 @@ scripts directory that will reduce the size of the php code and remove uneeded s
 flash space thats on the router, you probably do. In which case, download it to a seperate machine, run the scripts under the scripts directory and copy it up to the router manually.
 
 If you really want to play (and at this point it would be good if people did start looking to give me feedback), running it in an x86 VM is a good idea, but heres a rough outline of how you make it work on openwrt:
-- opkg update; opkg install openssl openvpn-openssl php5 php5-cgi php5-cli php5-mod-hash php5-mod-mcrypt php5-mod-sqlite3 px5g libopenssl php5-mod-session zoneinfo-core php5-mod-gd openssl-util
+- opkg update; opkg install openssl openvpn-openssl php5 php5-cgi php5-cli php5-mod-hash php5-mod-mcrypt php5-mod-sqlite3 px5g libopenssl php5-mod-session zoneinfo-core php5-mod-gd openssl-util git git-http
 - add 'list interpreter ".php=/usr/bin/php-cgi"' to the "main" in /etc/config/uhttpd
-- mkdir /vpn; cd /vpn; git clone https://github.com/takigama/RSOVPNS.git; mv RSOVPNS/* .; ln -s /vpn/www/ /www/vpn
+- cd /; git clone https://github.com/takigama/RSOVPNS.git vpn; ln -s /vpn/www/ /www/vpn
 - reboot or restart uhttpd
 - browse to http://ip_of_thing_you_installed_it_on/vpn/
 - advisable to create the servers dh key on another box as on the router will take HOURS on your stereotypical router CPU (goes in /vpn/data/server.dh) with the command "openssl gendh 2048 > server.dh"

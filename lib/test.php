@@ -27,7 +27,7 @@ function test_testtoken()
 
   $users = db_getUsers();
 
-  echo "<div id='mybodyheading'>Test a Token</div><hr><form method='post' id='tokentestform'>";
+  echo "<div class='mybodyheading'>Test a Token <a href='#' onmouseover='show_help(\"test_token.html\")' onmouseout='hide_help()'>?</a></div><hr><form method='post' id='tokentestform'>";
   echo "User: <select name='usertotest'>";
   foreach($users as $val) {
     $us = $val["Username"];
