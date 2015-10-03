@@ -303,8 +303,9 @@ function web_doPageBody()
 
 function web_normalPageBody()
 {
-  echo "<div id='mybodyheading'>Status</div>";
-  echo "normal page body...";
+  echo "<div class='mybodyheading'>Status</div><hr>";
+  echo "<div class='mybodysubheading'>Logs</div>";
+  log_viewLogs();
 }
 
 function web_doPageMenu()

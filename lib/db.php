@@ -163,6 +163,14 @@ function db_createDB()
   	`Radius`	INTEGER NOT NULL
   )");
 
+  // create the log table
+  $ourdb->exec("CREATE TABLE `log` (
+  	`id`	INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE,
+  	`type`	INTEGER NOT NULL DEFAULT 1,
+  	`time`	INTEGER NOT NULL,
+  	`entry`	INTEGER NOT NULL
+  )");
+
 //  $MESSAGE_TYPE=1;
 //  $MESSAGE = "Created database";
 
@@ -222,6 +230,55 @@ function db_changeEnablesForUser($user, $enabled)
   $prepares["updateenabled"]->bindValue(':user', $user, SQLITE3_TEXT);
   $prepares["updateenabled"]->execute();
 }
+
+//db_createLog($type, $entry, $time);
+//    $prepares["createuser"] = $ourdb->prepare("insert into users (Username, EMail, Enabled, Password, Radius) values (:username, :email, :enabled, :passhash, :radius)");
+
+function db_createLog($type, $entry, $time)
+{
+  global $ourdb, $MESSAGE, $MESSAGE_TYPE;
+
+  if(!isset($prepares["createlog"])) {
+    $prepares["createlog"] = $ourdb->prepare("insert into log (type, time, entry) values (:type, :time, :entry)");
+  }
+  $prepares["createlog"]->bindValue(':type', $type, SQLITE3_INTEGER);
+  $prepares["createlog"]->bindValue(':time', $time, SQLITE3_INTEGER);
+  $prepares["createlog"]->bindValue(':entry', $entry, SQLITE3_TEXT);
+  $prepares["createlog"]->execute();
+}
+
+function db_getLogs($number=20, $time=0)
+{
+  global $ourdb, $MESSAGE, $MESSAGE_TYPE;
+
+  if($time == 0) $time = time();
+
+  if(!isset($prepares["getlogs"])) {
+    $prepares["getlogs"] = $ourdb->prepare("select * from log where time < :time order by time desc limit :number");
+  }
+  $prepares["getlogs"]->bindValue(':time', $time, SQLITE3_INTEGER);
+  $prepares["getlogs"]->bindValue(':number', $number, SQLITE3_INTEGER);
+  $rows = $prepares["getlogs"]->execute();
+
+  $retval = array();
+  $n = 0;
+
+  while($row = $rows->fetchArray()) {
+    $retval[$n] = $row;
+    $n++;
+  }
+
+  if($n == 0) {
+    //error_log("cant find value for $key, sending default, $default");
+    return null;
+  } else {
+    //error_log("value for $key was $retval, sending");
+    return $retval;
+  }
+
+
+}
+
 
 function db_putTokenData($user, $tokendata)
 {
