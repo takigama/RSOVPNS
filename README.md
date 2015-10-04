@@ -59,6 +59,8 @@ portable, and so i've made it in php where it can be easily ported to run on lin
 9. move bulk user creation to a background process
 10. add more help
 11. pretty stat graphs on the login page via jschart
+12. move the current users dialog to an ajax'y table with paging and stuff
+13. add token re-sync to the test token page
 
 ## DONE:
 1. Fixed database code so that SQL injection shouldn't be possible
