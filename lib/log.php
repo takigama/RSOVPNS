@@ -50,6 +50,18 @@ function log_log($type, $entry, $time = 0)
 {
   if($time == 0) $time = time();
 
+  switch($type) {
+    case 1:
+      $entry = "info: $entry";
+    break;
+    case 2:
+      $entry = "warning: $entry";
+    break;
+    case 3:
+      $entry = "error: $entry";
+    break;
+  }
+
   db_createLog($type, $entry, $time);
 }
 
@@ -181,7 +193,7 @@ function build_log_table(query, num, page) {
         }
         document.getElementById('pagemax_id').innerHTML = 0;
       } else {
-        for(var i=0, len = result.items.length; i < len; i++) {
+        for(var i=0, len = result.items.length; i < (len-1); i++) {
           //console.log("i: "+i);
           console.log(result.items[i]);
           var thisclass = "log_info";
@@ -199,7 +211,7 @@ function build_log_table(query, num, page) {
           var thistime = result.items[i].time;
           var thisevent = result.items[i].entry;
           html += "<tr class='"+thisclass+"'><td class='"+thisclass+"'>"+thistime+"</td><td class='"+thisclass+"'>"+thisevent+"</td></tr>";
-          var pagemax = parseInt(result.maxitems)/parseInt(num);
+          var pagemax = Math.floor(parseInt(result.maxitems)/parseInt(num));
           document.getElementById('pagemax_id').innerHTML = pagemax;
         }
       }

@@ -161,8 +161,10 @@ function users_deleteUser()
   }
 
   if(db_deleteUser($username)) {
+    log_log(1, "User $username deleted");
     $json = '{ "result": "success", "reason": "User deleted" }';
   } else {
+    log_log(2, "User $username was not deleted (deosnt exist or general db failure)");
     $json = '{ "result": "failure", "reason": "User not deleted for some reason" }';
   }
   echo $json;
@@ -244,6 +246,7 @@ function users_processCSVFile($file)
       // username, email_address, password, radius, token_type, enabled, send_email
 
       // TODO: error check on result
+      log_log(1, "Creating user (batch) $username, $email");
       $result = db_createUser("$username", "$email", "$pass1", $radius, $token, $enabled, $token_type);
       // error_log("result from user create is $result for user $username, $email, $pass1 ---- ".print_r($vals));
       if($token == 1) user_createPickupData($username);
@@ -295,11 +298,12 @@ function users_doCreateUser()
       echo $json;
       return;
     } else {
+      log_log("Created user, $username with email of $email");
       $result = db_createUser("$username", "$email", "$pass1", $radius, $token, $enabled, $token_type);
     }
   }
 
-  user_createPickupData($username);
+  if($token_type != "none") user_createPickupData($username);
 
 
   $json = '{ "result": "success", "reason": "User created" }';

@@ -70,8 +70,10 @@ function ctrl_sendtestemail()
 
   $json = "";
   if(!$mail->send()) {
+    log_log(3, "Sending test email failed with ".$mail->ErrorInfo);
     $json = '{ "result": "failure", "reason": "'.$mail->ErrorInfo.'"}';
   } else {
+    log_log(1, "Sending test email succeeded");
     $json = '{ "result": "success", "reason": "E-Mail Sent Successfully" }';
   }
   echo $json;
@@ -103,6 +105,7 @@ function ctrl_backupData()
 
   system("$cmd > /tmp/backup.log 2>&1 &");
 
+  log_log(1, "Backup of system taken");
   $json = '{ "result": "success", "reason": "Backup Started" }';
 
   echo $json;
@@ -121,6 +124,7 @@ function ctrl_restoreFromInPlace()
 
   system("$cmd > /tmp/restore.log 2>&1 &");
 
+  log_log(2, "Restore of system from in-place backup completed");
   $json = '{ "result": "success", "reason": "Restore Started" }';
 
   echo $json;
@@ -148,7 +152,6 @@ function ctrl_statusPageBody()
   echo "<form id='testemailform'><tr><th>Send Test Email</th><td><input type='text' name='testemailto'></td>";
   echo "<td><input type='submit' name='Send Test Email' value='Send Test Email' id='send_test_email'><div id='send_test_email_scroller'></div></td></tr></form>";
   echo "</table>";
-  echo "<div class='mybodysubheading'>Batch Create Users</div>";
 
   if(file_exists("../data/backup.bk")) {
     $backuptime = date ("F d Y H:i:s.", filemtime("../data/backup.bk"));
@@ -158,15 +161,14 @@ function ctrl_statusPageBody()
     $download = "<a href='index.php?action=downloadbackup'>Download</a>";
   } else {
     $bk_time = "None Exists";
-    $download = "";
+    $download = "None Exists";
   }
 
   echo "<hr><div class='mybodysubheading'>Backups</div>";
   echo "<table class='configtable'>";
-  echo "<tr><th>Last Backup</th><td>$bk_time</td><td class='control_tr'><a href='#' onclick='return send_do_backup()'>Create</a></td></tr>";
+  echo "<tr><th>Last Backup</th><td>$bk_time</td><td class='control_tr'><a href='#' onclick='return send_do_backup()'>Create</a></td><td class='control_tr'><a href='#' onclick='return send_do_restore_inplace()'>Restore</a></td></tr>";
   echo "<tr><th>Download backup</th><td>$download</td></tr>";
   echo "<tr><th>Restore (Upload)</th><td>backup restore thingo</td></tr>";
-  echo "<tr><th>Restore (from current)</th><td  class='control_tr'><a href='#' onclick='return send_do_restore_inplace()'>Begin</a></td></tr>";
   echo "</table>";
 
 
@@ -183,6 +185,7 @@ function ctrl_stopOpenVpn()
 
   $_SESSION["messages"]["ctrl"]["type"] = 1;
   $_SESSION["messages"]["ctrl"]["text"] = "OpenVPN Server Has Been Stopped";
+  log_log(2, "OpenVPN service has been stopped");
 
 }
 
@@ -209,6 +212,7 @@ function ctrl_startOpenVpn()
 
   $_SESSION["messages"]["ctrl"]["type"] = 1;
   $_SESSION["messages"]["ctrl"]["text"] = "OpenVPN Server Has Been Started";
+  log_log(1, "OpenVPN service has been started");
 
 }
 
@@ -261,6 +265,7 @@ function ctrl_writeConfigFile()
 
 
   file_put_contents("$HOMEDIR/data/openvpn.conf", $config);
+  log_log(1, "OpenVPN server configuration file was wrriten");
 }
 
 function ctrl_writeClientFile()
@@ -273,6 +278,8 @@ function ctrl_writeClientFile()
   $config .= "dev tun\nverb 3\ncomp-lzo yes\npersist-key\npersist-tun\n\n<ca>\n".file_get_contents("$HOMEDIR/data/server.crt")."\n</ca>\n";
 
   file_put_contents("$HOMEDIR/data/".db_getConfig("site.ident").".ovpn", $config);
+  log_log(1, "OpenVPN client configuration file was wrriten");
+
 }
 
 

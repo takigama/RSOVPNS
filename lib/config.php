@@ -49,6 +49,7 @@ function conf_doUpdateConfig()
   }
   //echo "</html></pre>";
 
+  log_log(1, "configuration changes were saved");
   $json = '{ "result": "success", "reason": "Configuration Updated" }';
 
   echo $json;

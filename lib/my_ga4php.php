@@ -27,6 +27,7 @@ class MyGA extends GoogleAuthenticator {
     $thisTokenPickupKey = hash(sha256, $tkdata);
 
     error_log("createing token for ".$user." and ".$tokentype);
+    log_log(1, "creating token for $user of $tokentype");
     $this->setUser($user, $tokentype);
 
     return $thisTokenPickupKey;
