@@ -50,8 +50,15 @@ portable, and so i've made it in php where it can be easily ported to run on lin
 ## TODO:
 1. form validation
 2. code to backup data on schedule
-3. implement logins
+3. implement logins on admin pages
 4. so much error checking... so much...
+5. logging needs to be added to all components
+6. stats collcetion
+7. a way of running a cron (for purging logs, collecting stats, etc)
+8. add a field to the user for their real name?
+9. move bulk user creation to a background process
+10. add more help
+11. pretty stat graphs on the login page via jschart
 
 ## DONE:
 1. Fixed database code so that SQL injection shouldn't be possible
@@ -61,6 +68,7 @@ portable, and so i've made it in php where it can be easily ported to run on lin
 5. radius code
 6. email code
 7. user editing
+8. Added a logging page with ajax and various pieces
 
 ## Not in the plan:
 1. certificate auth - There are many reasons for this, but ultimately i wanted something simple
@@ -69,5 +77,5 @@ portable, and so i've made it in php where it can be easily ported to run on lin
 1. OpenVPN coders http://openvpn.net
 2. OpenWRT coders http://openwrt.org
 3. phpqrencode project http://phpqrcode.sourceforge.net/
-4. Myself for GA4PHP https://github.com/takigama/ga4php (which i have not updated in a while)
+4. Myself and others for GA4PHP https://github.com/takigama/ga4php (which i have not updated in a while)
 5. PHPMailer for PHPMailer https://github.com/PHPMailer/PHPMailer

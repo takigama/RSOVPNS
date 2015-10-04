@@ -53,12 +53,30 @@ input[type="password"] {
     width: 200px;
 }
 
+
 input[type="text"].logintext {
   width: 136px;
 }
 
 input[type="password"].logintext {
   width: 136px;
+}
+
+input[type="text"].pagenum_cl {
+  width: 20px;
+}
+
+.page_chooser {
+  float:right;
+  margin-right: 20px;
+}
+
+#pagemax_id {
+  display: inline;  
+}
+
+#searchbox {
+  width: 100%;
 }
 
 .loginframe {
@@ -76,6 +94,11 @@ input[type="password"].logintext {
   font-family: sans-serif;
 }
 
+.pager_image {
+  width: 12px;
+  padding-left: 12px;
+  padding-right: 12px;
+}
 #mymenu {
   width:160px;
   overflow:hidden;

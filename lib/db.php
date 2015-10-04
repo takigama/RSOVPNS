@@ -247,18 +247,35 @@ function db_createLog($type, $entry, $time)
   $prepares["createlog"]->execute();
 }
 
-function db_getLogs($number=20, $time=0)
+function db_getLogs($query="", $number=20, $start=0)
 {
   global $ourdb, $MESSAGE, $MESSAGE_TYPE;
 
   if($time == 0) $time = time();
 
-  if(!isset($prepares["getlogs"])) {
-    $prepares["getlogs"] = $ourdb->prepare("select * from log where time < :time order by time desc limit :number");
+  error_log("getlogs is $number, and $start");
+
+  $total = 1;
+
+  if($query != "") {
+
+    if(!isset($prepares["getlogswithquery"])) {
+      $prepares["getlogswithquery"] = $ourdb->prepare("select * from log where entry like :query order by time desc limit :number offset :start");
+    }
+    $prepares["getlogswithquery"]->bindValue(':number', $number, SQLITE3_INTEGER);
+    $prepares["getlogswithquery"]->bindValue(':start', $start, SQLITE3_INTEGER);
+    $prepares["getlogswithquery"]->bindValue(':query', "%".$query."%", SQLITE3_TEXT);
+    $rows = $prepares["getlogswithquery"]->execute();
+  } else {
+
+    if(!isset($prepares["getlogs"])) {
+      $prepares["getlogs"] = $ourdb->prepare("select * from log order by time desc limit :number offset :start");
+    }
+    $prepares["getlogs"]->bindValue(':number', $number, SQLITE3_INTEGER);
+    $prepares["getlogs"]->bindValue(':start', $start, SQLITE3_INTEGER);
+    $prepares["getlogs"]->bindValue(':number', $number, SQLITE3_INTEGER);
+    $rows = $prepares["getlogs"]->execute();
   }
-  $prepares["getlogs"]->bindValue(':time', $time, SQLITE3_INTEGER);
-  $prepares["getlogs"]->bindValue(':number', $number, SQLITE3_INTEGER);
-  $rows = $prepares["getlogs"]->execute();
 
   $retval = array();
   $n = 0;
@@ -267,6 +284,7 @@ function db_getLogs($number=20, $time=0)
     $retval[$n] = $row;
     $n++;
   }
+  $retval["total"] = $total;
 
   if($n == 0) {
     //error_log("cant find value for $key, sending default, $default");
@@ -279,6 +297,29 @@ function db_getLogs($number=20, $time=0)
 
 }
 
+function db_getLogsTotal($query="")
+{
+  global $ourdb, $MESSAGE, $MESSAGE_TYPE;
+
+  $total = -1;
+
+  if($query != "") {
+    if(!isset($prepares["getlogstotalwithquery"])) {
+      $prepares["getlogstotalwithquery"] = $ourdb->prepare("select count(*) from log where entry like :query");
+    }
+    $prepares["getlogstotalwithquery"]->bindValue(':query', "%".$query."%", SQLITE3_TEXT);
+    $rows = $prepares["getlogstotalwithquery"]->execute();
+    $total = $rows->fetchArray()[0];
+  } else {
+    if(!isset($prepares["getlogstotal"])) {
+      $prepares["getlogstotal"] = $ourdb->prepare("select count(*) from log");
+    }
+    $rows = $prepares["getlogstotal"]->execute();
+    $total = $rows->fetchArray()[0];
+  }
+
+  return $total;
+}
 
 function db_putTokenData($user, $tokendata)
 {
