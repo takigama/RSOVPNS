@@ -304,7 +304,7 @@ function web_doPageBody()
 function web_normalPageBody()
 {
   echo "<div class='mybodyheading'>Status</div><hr>";
-  echo "<div class='mybodysubheading'>Logs</div>";
+  echo "<div class='mybodysubheading'>Logs <a href='#' onmouseover='show_help(\"logs_help.html\")' onmouseout='hide_help()'>?</a></div>";
   log_viewLogs();
 }
 

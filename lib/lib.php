@@ -17,7 +17,7 @@ require_once("country.php");
 //require_once("configSave.php");
 //require_once("logging.php");
 //require_once("phpqrencode.php");
-require_once("test.php");
+require_once("token.php");
 
 
 

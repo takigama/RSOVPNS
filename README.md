@@ -81,3 +81,9 @@ portable, and so i've made it in php where it can be easily ported to run on lin
 3. phpqrencode project http://phpqrcode.sourceforge.net/
 4. Myself and others for GA4PHP https://github.com/takigama/ga4php (which i have not updated in a while)
 5. PHPMailer for PHPMailer https://github.com/PHPMailer/PHPMailer
+6. Loading gif i cant find an attribution for (https://themarketingoak.files.wordpress.com/2015/07/circle-loading-animation.gif)
+
+## License
+1. This code is licensed under the GPL (v2): http://www.gnu.org/licenses/gpl-2.0.html
+2. Any code from other sources is licensed under their respective licenses
+3. Images not listed in the attributions (or contained in the assets directory) are created by me a licensed under the create commons, attributions share-alive 4.0 http://creativecommons.org/licenses/by-sa/4.0/

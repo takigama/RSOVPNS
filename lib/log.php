@@ -173,6 +173,11 @@ function build_log_table(query, num, page) {
     fullquery += "&query="+query;
   }
 
+  var loadinghtml = "<table class='logstable' id='logstable'><tr><td><img src='images/loading.gif' class='loading_gif'></td></tr></table>";
+  document.getElementById('logstable_div').innerHTML = loadinghtml;
+
+  return;
+
   $.ajax({
     url: "index.php?action=getlogs&"+fullquery,
     type: "POST",
@@ -211,7 +216,7 @@ function build_log_table(query, num, page) {
           var thistime = result.items[i].time;
           var thisevent = result.items[i].entry;
           html += "<tr class='"+thisclass+"'><td class='"+thisclass+"'>"+thistime+"</td><td class='"+thisclass+"'>"+thisevent+"</td></tr>";
-          var pagemax = Math.floor(parseInt(result.maxitems)/parseInt(num));
+          var pagemax = Math.floor(parseInt(result.maxitems)/parseInt(num))+1;
           document.getElementById('pagemax_id').innerHTML = pagemax;
         }
       }

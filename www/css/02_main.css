@@ -72,7 +72,7 @@ input[type="text"].pagenum_cl {
 }
 
 #pagemax_id {
-  display: inline;  
+  display: inline;
 }
 
 #searchbox {
@@ -92,6 +92,12 @@ input[type="text"].pagenum_cl {
 .logininsideframe {
   font-size: 120%;
   font-family: sans-serif;
+}
+
+.loading_gif {
+  width: 54px;
+  padding-left: 12px;
+  padding-right: 12px;
 }
 
 .pager_image {

@@ -20,6 +20,11 @@ $( document ).ready(function() {
     send_test_email();
   })
 
+  $("#resync_token_button").click(function(e) {
+    e.preventDefault();
+    submit_resync_token();
+  })
+
 
 })
 
@@ -54,6 +59,29 @@ function send_test_email()
         alert(errorThrown);
     }
   })
+}
+
+function submit_resync_token()
+{
+  $.ajax({
+    url: "index.php?action=resynctoken",
+    type: "POST",
+    data: $("#tokenresyncform").serialize(),
+    success: function (data) {
+      //console.log(data);
+      result = JSON.parse(data);
+      if(result.result == "failure") {
+        alert("Failed: " + result.reason);
+      }
+      if(result.result == "success") {
+        alert("Token resynced successfully!");
+      }
+    },
+    error: function (jXHR, textStatus, errorThrown) {
+        alert(errorThrown);
+    }
+  })
+
 }
 
 function submit_test_token_check()

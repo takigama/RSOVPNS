@@ -298,7 +298,7 @@ function users_doCreateUser()
       echo $json;
       return;
     } else {
-      log_log("Created user, $username with email of $email");
+      log_log(1, "Created user, $username with email of $email");
       $result = db_createUser("$username", "$email", "$pass1", $radius, $token, $enabled, $token_type);
     }
   }
