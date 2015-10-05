@@ -145,7 +145,7 @@ function ctrl_statusPageBody()
     $n_users = 0;
   }
   echo "<div class='mybodyheading'>Status</div><hr>";
-  echo "<div class='mybodysubheading'>OpenVPN</div>";
+  echo "<div class='mybodysubheading'>OpenVPN <a href='#' onmouseover='show_help(\"openvpn_status.html\")' onmouseout='hide_help()'>?</a></div>";
   echo "<table class='configtable'>";
   echo "<tr><th>Server Status</th><td>$server_status</td><td class='control_tr'>$control_options</td></tr>";
   echo "<tr><th>Number of Users</th><td>$n_users</td></tr>";
@@ -164,7 +164,7 @@ function ctrl_statusPageBody()
     $download = "None Exists";
   }
 
-  echo "<hr><div class='mybodysubheading'>Backups</div>";
+  echo "<hr><div class='mybodysubheading'>Backups <a href='#' onmouseover='show_help(\"backups.html\")' onmouseout='hide_help()'>?</a></div>";
   echo "<table class='configtable'>";
   echo "<tr><th>Last Backup</th><td>$bk_time</td><td class='control_tr'><a href='#' onclick='return send_do_backup()'>Create</a></td><td class='control_tr'><a href='#' onclick='return send_do_restore_inplace()'>Restore</a></td></tr>";
   echo "<tr><th>Download backup</th><td>$download</td></tr>";
