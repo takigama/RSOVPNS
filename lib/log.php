@@ -176,8 +176,6 @@ function build_log_table(query, num, page) {
   var loadinghtml = "<table class='logstable' id='logstable'><tr><td><img src='images/loading.gif' class='loading_gif'></td></tr></table>";
   document.getElementById('logstable_div').innerHTML = loadinghtml;
 
-  return;
-
   $.ajax({
     url: "index.php?action=getlogs&"+fullquery,
     type: "POST",
