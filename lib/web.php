@@ -305,38 +305,114 @@ function web_normalPageBody()
 {
   echo "<div class='mybodyheading'>Status</div><hr>";
   echo "<div class='mybodysubheading'>Performance <a href='#' onmouseover='show_help(\"performance.html\")' onmouseout='hide_help()'>?</a></div>";
-  echo "<canvas id='myChart' width='400' height='400'></canvas>";
+  echo "<table class='logstable'>";
+  echo "<tr><th>Connected Users</th><th>Data Usage</th><th>CPU Usage</th></tr>";
+  echo "<tr><td><canvas id='connected_chart' width='500' height='200'></canvas></td><td><canvas id='datausage_chart' width='500' height='200'></canvas></td><td><canvas id='cpuperf_chart' width='500' height='200'></canvas></td></tr>";
+  echo "</table>";
 
   echo "<script type='text/javascript'>";
 ?>
-var data = {
+var data_conn = {
     labels: ["January", "February", "March", "April", "May", "June", "July"],
     datasets: [
         {
-            label: "My First dataset",
-            fillColor: "rgba(220,220,220,0.2)",
-            strokeColor: "rgba(220,220,220,1)",
-            pointColor: "rgba(220,220,220,1)",
+            label: "Connected Users",
+            fillColor: "rgba(160,160,220,0.2)",
+            strokeColor: "rgba(160,160,220,1)",
+            pointColor: "rgba(160,160,220,1)",
             pointStrokeColor: "#fff",
             pointHighlightFill: "#fff",
             pointHighlightStroke: "rgba(220,220,220,1)",
-            data: [65, 59, 80, 81, 56, 55, 40]
-        },
-        {
-            label: "My Second dataset",
-            fillColor: "rgba(151,187,205,0.2)",
-            strokeColor: "rgba(151,187,205,1)",
-            pointColor: "rgba(151,187,205,1)",
-            pointStrokeColor: "#fff",
-            pointHighlightFill: "#fff",
-            pointHighlightStroke: "rgba(151,187,205,1)",
-            data: [28, 48, 40, 19, 86, 27, 90]
+            data: [0, 1, 2, 1, 2, 2]
         }
     ]
 };
 
-var ctx = document.getElementById("myChart").getContext("2d");
-var myLineChart = new Chart(ctx).Line(data);
+var options_conn = {
+  bezierCurve: false
+};
+
+var ctx_conn = document.getElementById("connected_chart").getContext("2d");
+var myconnchart = new Chart(ctx_conn).Line(data_conn, options_conn);
+
+var data_usage = {
+    labels: ["January", "February", "March", "April", "May", "June", "July"],
+    datasets: [
+        {
+            label: "Input",
+            fillColor: "rgba(160,160,220,0.2)",
+            strokeColor: "rgba(160,160,220,1)",
+            pointColor: "rgba(160,160,220,1)",
+            pointStrokeColor: "#fff",
+            pointHighlightFill: "#fff",
+            pointHighlightStroke: "rgba(220,220,220,1)",
+            data: [100, 150, 650, 220, 110, 191, 701]
+        },
+        {
+            label: "Output",
+            fillColor: "rgba(220,160,160,0.2)",
+            strokeColor: "rgba(220,160,160,1)",
+            pointColor: "rgba(220,160,160,1)",
+            pointStrokeColor: "#fff",
+            pointHighlightFill: "#fff",
+            pointHighlightStroke: "rgba(220,220,220,1)",
+            data: [130, 250, 350, 220, 70, 21, 101]
+        }
+    ]
+};
+
+var options_usage = {
+  bezierCurve: true
+};
+
+var ctx_usage = document.getElementById("datausage_chart").getContext("2d");
+var myusagechart = new Chart(ctx_usage).Line(data_usage, options_usage);
+
+
+var data_cpu = {
+    labels: ["January", "February", "March", "April", "May", "June", "July"],
+    datasets: [
+        {
+            label: "System",
+            fillColor: "rgba(160,220,160,0.2)",
+            strokeColor: "rgba(160,220,160,1)",
+            pointColor: "rgba(160,220,160,1)",
+            pointStrokeColor: "#fff",
+            pointHighlightFill: "#fff",
+            pointHighlightStroke: "rgba(220,220,220,1)",
+            data: [10, 15, 10, 7, 5, 3, 8]
+        },
+        {
+            label: "User",
+            fillColor: "rgba(220,160,160,0.2)",
+            strokeColor: "rgba(220,160,160,1)",
+            pointColor: "rgba(220,160,160,1)",
+            pointStrokeColor: "#fff",
+            pointHighlightFill: "#fff",
+            pointHighlightStroke: "rgba(220,220,220,1)",
+            data: [32, 45, 54, 64, 82, 45, 16]
+        },
+        {
+            label: "Wait",
+            fillColor: "rgba(160,160,220,0.2)",
+            strokeColor: "rgba(160,160,220,1)",
+            pointColor: "rgba(160,160,220,1)",
+            pointStrokeColor: "#fff",
+            pointHighlightFill: "#fff",
+            pointHighlightStroke: "rgba(220,220,220,1)",
+            data: [2,5,6,5,1,3,9]
+        }
+    ]
+};
+
+var options_cpu = {
+  bezierCurve: true
+};
+
+var ctx_cpu = document.getElementById("cpuperf_chart").getContext("2d");
+var myucpuchart = new Chart(ctx_cpu).Line(data_cpu, options_cpu);
+
+
 <?php
   echo "</script>";
 
