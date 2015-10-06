@@ -173,8 +173,10 @@ function build_log_table(query, num, page) {
     fullquery += "&query="+query;
   }
 
-  var loadinghtml = "<table class='logstable' id='logstable'><tr><td><img src='images/loading.gif' class='loading_gif'></td></tr></table>";
+  var loadinghtml = "<table class='logstable' id='logstable'><tr><td>Loading, Standby.... <img src='images/loading.gif' class='loading_gif'></td></tr></table>";
   document.getElementById('logstable_div').innerHTML = loadinghtml;
+
+  
 
   $.ajax({
     url: "index.php?action=getlogs&"+fullquery,

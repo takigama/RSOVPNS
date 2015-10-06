@@ -1,6 +1,6 @@
 # RSOVPNS
 Real Simple OpenVPN Server is a simple chunk of software (primarily at this time aimed at openwrt)
-that provides a simple gui to an OpenVPN service. 
+that provides a simple gui to an OpenVPN service.
 
 What it has is:
 - simple gui for config
@@ -81,7 +81,8 @@ portable, and so i've made it in php where it can be easily ported to run on lin
 3. phpqrencode project http://phpqrcode.sourceforge.net/
 4. Myself and others for GA4PHP https://github.com/takigama/ga4php (which i have not updated in a while)
 5. PHPMailer for PHPMailer https://github.com/PHPMailer/PHPMailer
-6. Loading gif i cant find an attribution for (https://themarketingoak.files.wordpress.com/2015/07/circle-loading-animation.gif)
+6. Loading gif comes from http://www.ajaxload.info/
+7. Nick Downie for chartsjs, https://github.com/nnnick/Chart.js
 
 ## License
 1. This code is licensed under the GPL (v2): http://www.gnu.org/licenses/gpl-2.0.html
