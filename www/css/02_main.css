@@ -113,6 +113,21 @@ input[type="text"].pagenum_cl {
   padding-right: 20px;
 }
 
+#connected_users_chart {
+  width: 100%;
+  height: 290px;
+}
+
+#data_usage_graph {
+  width: 100%;
+  height: 290px;
+}
+
+#cpu_usage_graph {
+  width: 100%;
+  height: 290px;
+}
+
 #mybody {
   display:block;
   overflow:hidden;
@@ -341,6 +356,35 @@ input[type="text"].pagenum_cl {
   height: 2px;
   width: 0px;
 }
+
+table.graphstable {
+  border-spacing: 0px;
+  width: 100%;
+}
+
+table.graphstable td {
+  width: 33%;
+  border-width: 1px;
+  border-style: dashed;
+  border-color: #000000;
+  border-collapse: collapse;
+  padding-left: 4px;
+  padding-right: 4px;
+
+}
+
+table.graphstable th {
+  border-width: 1px;
+  border-style: solid;
+  border-color: #000000;
+  border-collapse: collapse;
+  background-color: #CCCCCC;
+}
+
+table.graphstable tr {
+  background-color: #FFFFFF;
+}
+
 
 table.logstable_frame {
   border-width: 2px;
