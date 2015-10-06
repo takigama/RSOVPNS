@@ -60,7 +60,7 @@ portable, and so i've made it in php where it can be easily ported to run on lin
 10. add more help
 11. pretty stat graphs on the login page via jschart
 12. move the current users dialog to an ajax'y table with paging and stuff
-13. add token re-sync to the test token page
+13: translations?
 
 ## DONE:
 1. Fixed database code so that SQL injection shouldn't be possible
@@ -71,6 +71,7 @@ portable, and so i've made it in php where it can be easily ported to run on lin
 6. email code
 7. user editing
 8. Added a logging page with ajax and various pieces
+13. add token re-sync to the test token page
 
 ## Not in the plan:
 1. certificate auth - There are many reasons for this, but ultimately i wanted something simple
@@ -82,7 +83,7 @@ portable, and so i've made it in php where it can be easily ported to run on lin
 4. Myself and others for GA4PHP https://github.com/takigama/ga4php (which i have not updated in a while)
 5. PHPMailer for PHPMailer https://github.com/PHPMailer/PHPMailer
 6. Loading gif comes from http://www.ajaxload.info/
-7. Nick Downie for chartsjs, https://github.com/nnnick/Chart.js
+7. David Schnur et al for Flot (charting), http://www.flotcharts.org/ 
 
 ## License
 1. This code is licensed under the GPL (v2): http://www.gnu.org/licenses/gpl-2.0.html
