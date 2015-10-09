@@ -322,7 +322,7 @@ var nusers = Math.floor(Math.random()*10);
 var cplot_max_x=0;
 var cplot_min_x=0;
 
-for(var i=0; i<200; i++) {
+for(var i=0; i<400; i++) {
   cplot_min_x = starttime-(i*60000);
   d.push([cplot_min_x, nusers]);
   if(cplot_max_x==0) cplot_max_x = cplot_min_x;
@@ -347,6 +347,8 @@ $( document ).ready(function() {
 
   })
 
+
+
   $("#connected_users_chart").bind("plotselected", function (event, ranges) {
 
   			// do the zooming
@@ -368,10 +370,10 @@ $( document ).ready(function() {
       var d2 = [], d3 = [];
       var ndata = Math.floor(Math.random()*10000);
 
-      for(var i=0; i<60; i++) {
-        d2.push([starttime-(i*20000), ndata]);
+      for(var i=0; i<400; i++) {
+        d2.push([starttime-(i*60000), ndata]);
         ndata = Math.floor(Math.random()*10000);
-        d3.push([starttime-(i*20000), ndata]);
+        d3.push([starttime-(i*60000), ndata]);
         ndata = Math.floor(Math.random()*10000);
       }
 
@@ -395,6 +397,8 @@ $( document ).ready(function() {
       }
     });
 
+
+
     $("#data_usage_graph").bind("plotselected", function (event, ranges) {
 
     			// do the zooming
@@ -409,25 +413,31 @@ $( document ).ready(function() {
 
     			// don't fire event on the overview to prevent eternal loop
     		});
+        $("#data_usage_graph").dblclick(function () {
+          data_plot.setSelection({x1: cplot_min_x, x2: cplot_max_x});
+
+        })
+
 
   var d10 = [], d11 = [], d12 = [];
   var d10_c = Math.floor(Math.random()*100);
   var d11_c = Math.floor(Math.random()*(100-d10_c));
   var d12_c = 100-d10_c-d11_c;
 
-  for(var i=0; i<60; i++) {
+  for(var i=0; i<400; i++) {
     var delt = Math.floor(Math.random()*7)-3;
-    var delt_11 = Math.floor(Math.random()*delt)-(delt/2);
+    var delt_11 = Math.floor(Math.random()*(delt*2))-(delt/2);
     d10_c += delt;
     d11_c += delt_11;
     d12_c = 100-d10_c-d11_c;
-    d10.push([starttime-(i*20000), d10_c]);
-    d11.push([starttime-(i*20000), d11_c]);
-    d12.push([starttime-(i*20000), d12_c]);
+    d10.push([starttime-(i*60000), d10_c]);
+    d11.push([starttime-(i*60000), d11_c]);
+    d12.push([starttime-(i*60000), d12_c]);
   }
 
 
-  $.plot("#cpu_usage_graph",  [{
+
+  var cpu_plus = $.plot("#cpu_usage_graph",  [{
     data: d10
   }, {
     data: d11
@@ -439,6 +449,28 @@ $( document ).ready(function() {
         mode: "x"
       }
   });
+  $("#cpu_usage_graph").dblclick(function () {
+    console.log("setting to");
+    console.log(cplot_min_x);
+    console.log(cplot_max_x);
+    cpu_plus.setSelection({x1: cplot_min_x, x2: cplot_max_x});
+
+  })
+  $("#cpu_usage_graph").bind("plotselected", function (event, ranges) {
+
+        // do the zooming
+        $.each(cpu_plus.getXAxes(), function(_, axis) {
+          var opts = axis.options;
+          opts.min = ranges.xaxis.from;
+          opts.max = ranges.xaxis.to;
+        });
+        cpu_plus.setupGrid();
+        cpu_plus.draw();
+        cpu_plus.clearSelection();
+
+        // don't fire event on the overview to prevent eternal loop
+      });
+
 })
 
 <?php
