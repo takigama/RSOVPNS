@@ -306,7 +306,7 @@ function web_normalPageBody()
   echo "<div class='mybodyheading'>Status</div><hr>";
   echo "<div class='mybodysubheading'>Performance <a href='#' onmouseover='show_help(\"performance.html\")' onmouseout='hide_help()'>?</a></div>";
   echo "<table class='graphstable'>";
-  echo "<tr><th>Connected Users</th><th>Data Usage</th><th>CPU Usage</th></tr>";
+  echo "<tr><th>Connected Users</th><th>Data Usage</th><th>CPU Usage (of OpenVPN Server)</th></tr>";
   echo "<tr><td><div id='connected_users_chart'></div></td><td><div id='data_usage_graph'></div></td><td><div id='cpu_usage_graph'></div></td></tr>";
   echo "</table>";
 
@@ -420,15 +420,23 @@ $( document ).ready(function() {
 
 
   var d10 = [], d11 = [], d12 = [];
-  var d10_c = Math.floor(Math.random()*100);
+  var d10_c = Math.floor(Math.random()*30);
   var d11_c = Math.floor(Math.random()*(100-d10_c));
   var d12_c = 100-d10_c-d11_c;
+  console.log("d10start");
+  console.log(d10_c);
+  console.log(d11_c);
+  console.log(d12_c);
 
   for(var i=0; i<400; i++) {
     var delt = Math.floor(Math.random()*7)-3;
-    var delt_11 = Math.floor(Math.random()*(delt*2))-(delt/2);
+    var delt_11 = Math.floor(Math.random()*7)-3;
     d10_c += delt;
+    if(d10_c > 60) d10_c = 60;
+    if(d10_c < 0) d10_c = 0;
     d11_c += delt_11;
+    if(d11_c > 40) d11_c = 30;
+    if(d11_c < 0) d11_c = 0;
     d12_c = 100-d10_c-d11_c;
     d10.push([starttime-(i*60000), d10_c]);
     d11.push([starttime-(i*60000), d11_c]);
