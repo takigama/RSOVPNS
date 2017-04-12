@@ -78,7 +78,7 @@ function web_doLoginHeadCheck()
 
 function web_checkMgmtIP()
 {
-  $ips = explode(" ", trim(preg_replace('/\s\s+/', ' ', db_getConfig("admin.allowednetworks", "10.*\r\n192.168.*\r\n127.*\r\n::1\r\n"))));
+  $ips = explode(" ", trim(preg_replace('/\s\s+/', ' ', db_getConfig("admin.allowednetworks", "10.*\r\n192.168.*\r\n127.*\r\n::1\r\n172.*\r\n"))));
   $from_addr = $_SERVER["REMOTE_ADDR"];
 
   //print_r($ips);
@@ -87,7 +87,7 @@ function web_checkMgmtIP()
     //$valnew = str_replace(":", '\\:', $val);
     $valnew = $val;
     //file_put_contents("/tmp/f.txt",$valnew);
-    //error_log("checking $from_addr against $valnew");
+    error_log("checking $from_addr against $valnew");
 
     if(preg_match("/$val/", $from_addr)) {
       //error_log("Yes: $from_addr, $valnew");
@@ -226,8 +226,8 @@ function web_doCreateCert()
   db_setConfig("cert.commonname", $cn);
   db_setConfig("cert.validity", $valid);
 
-  $cmd = "px5g selfsigned -days $valid -newkey rsa:2048 -keyout $HOMEDIR/data/server.key -out $HOMEDIR/data/server.crt -subj \"/C=$country/ST=$st/L=$loc/O=$org/OU=$dept/CN=$cn\" > /dev/null 2>&1";
-  //echo("would run: $cmd");
+  $cmd = "px5g selfsigned -days $valid -newkey rsa:2048 -keyout $HOMEDIR/data/server.key -out $HOMEDIR/data/server.crt -subj \"/C=$country/ST=$st/L=$loc/O=$org/OU=$dept/CN=$cn\" > /tmp/px5g.log 2>&1";
+  error_log("would run: $cmd");
   system("touch ../data/server.key");
   system("touch ../data/server.crt");
   system($cmd);

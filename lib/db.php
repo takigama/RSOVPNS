@@ -95,10 +95,10 @@ function db_getConfig($key, $default = -1)
   }
 
   if($n == 0) {
-    //error_log("cant find value for $key, sending default, $default");
+    error_log("cant find value for $key, sending default, $default");
     return $default;
   } else {
-    //error_log("value for $key was $retval, sending");
+    error_log("value for $key was $retval, sending");
     return $retval;
   }
 }
